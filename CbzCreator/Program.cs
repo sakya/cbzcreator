@@ -22,6 +22,9 @@ public static class Program
             return -1;
         }
 
+        options.InputPath = Path.GetFullPath(options.InputPath!);
+        options.OutputPath = Path.GetFullPath(options.OutputPath!);
+
         Console.WriteLine($"Input : {options.InputPath}");
         Console.WriteLine($"Output: {options.OutputPath}");
         Console.WriteLine($"Title : {options.Title}");
