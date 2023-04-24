@@ -1,5 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using CbzCreator.Lib.Models;
+using CbzCreatorGui.Models;
 
 namespace CbzCreatorGui
 {
@@ -8,6 +13,18 @@ namespace CbzCreatorGui
         public MainWindow()
         {
             InitializeComponent();
+
+            List<NameValue> statuses = new List<NameValue>()
+            {
+                new("Unknown", Info.Statuses.Unknown),
+                new("Ongoing", Info.Statuses.Ongoing),
+                new("Completed", Info.Statuses.Completed),
+                new("Licensed", Info.Statuses.Licensed),
+                new("Publishing finished", Info.Statuses.PublishingFinished),
+                new("Cancelled", Info.Statuses.Cancelled),
+                new("On hiatus", Info.Statuses.OnHiatus),
+            };
+            Status.Items = statuses;
         }
 
         private async void OnOpenFolderClick(object? sender, RoutedEventArgs e)
@@ -30,13 +47,64 @@ namespace CbzCreatorGui
                 {
                     SearchTitle = ComicTitle.Text
                 };
+                var res = await dlg.ShowDialog<Medium>(this);
+                if (res != null) {
+                    ComicTitle.Text = res.Title?.English ?? res.Title?.Romaji;
+                    Authors.Text = res.Staff?.Author?.Node?.Name?.Full;
+                    Artists.Text = res.Staff?.Artist?.Node?.Name?.Full;
+                    Description.Text = StripHtml(res.Description);
+                    if (res.Genres != null)
+                        Genres.Text = string.Join(", ", res.Genres);
+
+                    Status.SelectedIndex = res.Status switch
+                    {
+                        "FINISHED" => (int)Info.Statuses.PublishingFinished,
+                        "RELEASING" => (int)Info.Statuses.Ongoing,
+                        "CANCELLED" => (int)Info.Statuses.Cancelled,
+                        "HIATUS" => (int)Info.Statuses.OnHiatus,
+                        _ => 0
+                    };
+                }
+            }
+        }
+
+        private async void OnCreateClick(object? sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(InputPath.Text) &&
+                !string.IsNullOrEmpty(OutputPath.Text) &&
+                !string.IsNullOrEmpty(ComicTitle.Text)) {
+
+                var info = new Info()
+                {
+                    Title = ComicTitle.Text,
+                    Author = Authors.Text,
+                    Artist = Artists.Text,
+                    Description = Description.Text,
+                    Genre = Genres.Text?.Split(new char[] { ',' }).ToList(),
+                };
+                if (Status.SelectedItem is NameValue value)
+                    info.Status = (Info.Statuses)(value.Value ?? Info.Statuses.Unknown);
+
+                var dlg = new LogWindow
+                {
+                    InputPath = InputPath.Text,
+                    OutputPath = OutputPath.Text,
+                    Info = info
+                };
                 await dlg.ShowDialog(this);
             }
         }
 
-        private void OnCreateClick(object? sender, RoutedEventArgs e)
+        private string? StripHtml(string? text)
         {
+            if (text != null) {
+                text = text.Replace("\r", string.Empty).Replace("\n", string.Empty);
+                text = text.Replace("<br>", "\n");
+                text = text.Replace("<b>", string.Empty);
+                text = text.Replace("</b>", string.Empty);
+            }
 
+            return text;
         }
     }
 }

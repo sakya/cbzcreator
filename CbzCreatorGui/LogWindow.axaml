@@ -1,0 +1,22 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="CbzCreatorGui.LogWindow"
+        WindowStartupLocation="CenterOwner"
+        Width="500" Height="500"
+        Title="Log">
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBox Name="Log" AcceptsReturn="True" IsReadOnly="True" TextWrapping="NoWrap" />
+
+        <Button Grid.Row="1" HorizontalAlignment="Stretch" MinHeight="50" Margin="0,30,0,0">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Cancel</TextBlock>
+        </Button>
+    </Grid>
+</Window>

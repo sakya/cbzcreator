@@ -21,7 +21,9 @@ public class Creator
     /// <param name="info">The comic <see cref="Info"/></param>
     /// <param name="inputPath">The input path</param>
     /// <param name="outputPath">The output path</param>
-    public static void Create(Info info, string inputPath, string outputPath, Action<string>? logger = null)
+    /// <param name="token">The <see cref="CancellationToken"/></param>
+    /// <param name="logger">The logger function</param>
+    public static void Create(Info info, string inputPath, string outputPath, CancellationToken? token = null, Action<string>? logger = null)
     {
         if (!Directory.Exists(outputPath))
             Directory.CreateDirectory(outputPath!);
@@ -36,6 +38,9 @@ public class Creator
         // Build CBZs
         var title = SanitizeFilename(info.Title!);
         foreach (var dir in Directory.GetDirectories(inputPath)) {
+            if (token?.IsCancellationRequested == true)
+                return;
+
             if (dir is "." or "..")
                 continue;
 
@@ -45,7 +50,7 @@ public class Creator
                 var output = Path.Combine(outputPath!, $"{title} - {name}.cbz");
                 logger?.Invoke($"Creating {Path.GetFileName(output)} from {dir}");
 
-                Compress(dir, output);
+                Compress(dir, output, token);
             }
         }
     }
@@ -55,11 +60,14 @@ public class Creator
     /// </summary>
     /// <param name="inputPath">The input folder containing images</param>
     /// <param name="outputFile">The output file path</param>
-    private static void Compress(string inputPath, string outputFile)
+    private static void Compress(string inputPath, string outputFile, CancellationToken? token)
     {
         using var stream = new FileStream(outputFile, FileMode.Create, FileAccess.Write);
         using var zip = new ZipArchive(stream, ZipArchiveMode.Create);
         foreach (var file in Directory.GetFiles(inputPath)) {
+            if (token?.IsCancellationRequested == true)
+                return;
+
             var md5 = CalculateMd5(file);
             if (Md5ToSkip.Contains(md5))
                 continue;

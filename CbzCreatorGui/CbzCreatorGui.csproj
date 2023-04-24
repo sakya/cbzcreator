@@ -18,6 +18,7 @@
         <TrimmableAssembly Include="Avalonia.Themes.Default" />
     </ItemGroup>
     <ItemGroup>
+        <PackageReference Include="AsyncImageLoader.Avalonia" Version="2.4.0" />
         <PackageReference Include="Avalonia" Version="0.10.19" />
         <PackageReference Include="Avalonia.Desktop" Version="0.10.19" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
@@ -27,5 +28,10 @@
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\CbzCreator.Lib\CbzCreator.Lib.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Reference Include="Newtonsoft.Json">
+        <HintPath>..\..\..\.nuget\packages\newtonsoft.json\13.0.3\lib\net6.0\Newtonsoft.Json.dll</HintPath>
+      </Reference>
     </ItemGroup>
 </Project>

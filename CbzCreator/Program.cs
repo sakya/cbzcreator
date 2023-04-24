@@ -42,7 +42,7 @@ public static class Program
             Title = options.Title,
             Author = options.Author
         };
-        Creator.Create(info, options.InputPath, options.OutputPath, Console.WriteLine);
+        Creator.Create(info, options.InputPath, options.OutputPath, null, Console.WriteLine);
 
         return 0;
     }
