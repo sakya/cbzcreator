@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace CbzCreator.Models;
+namespace CbzCreator.Lib.Models;
 
 public class Info
 {

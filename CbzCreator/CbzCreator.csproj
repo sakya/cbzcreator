@@ -16,7 +16,10 @@
     
     <ItemGroup>
       <PackageReference Include="CmdLineArgsParser" Version="0.7.4" />
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\CbzCreator.Lib\CbzCreator.Lib.csproj" />
     </ItemGroup>
 
 </Project>

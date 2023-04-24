@@ -1,8 +1,7 @@
-﻿using System.IO.Compression;
-using System.Security.Cryptography;
+﻿using CbzCreator.Lib;
+using CbzCreator.Lib.Models;
 using CbzCreator.Models;
 using CmdLineArgsParser;
-using Newtonsoft.Json;
 
 namespace CbzCreator;
 
@@ -49,73 +48,13 @@ public static class Program
         if (!Directory.Exists(options.OutputPath))
             Directory.CreateDirectory(options.OutputPath!);
 
-        // Write info file
         var info = new Info()
         {
             Title = options.Title,
             Author = options.Author
         };
-        using (var jsonStream = new FileStream(Path.Combine(options.OutputPath, "details.json"), FileMode.Create, FileAccess.Write)) {
-            using (var sr = new StreamWriter(jsonStream)) {
-                sr.Write(JsonConvert.SerializeObject(info, Formatting.Indented));
-            }
-        }
+        Creator.Create(info, options.InputPath, options.OutputPath, Console.WriteLine);
 
-        // Build CBZs
-        var title = SanitizeFilename(options.Title!);
-        foreach (var dir in Directory.GetDirectories(options.InputPath!)) {
-            if (dir is "." or "..")
-                continue;
-
-            var idx = dir.LastIndexOf(Path.DirectorySeparatorChar);
-            if (idx >= 0) {
-                var name = SanitizeFilename(dir.Substring(idx + 1));
-                Compress(Path.Combine(options.OutputPath!, $"{title} - {name}.cbz"), dir);
-            }
-        }
         return 0;
-    }
-
-    private static void Compress(string name, string path)
-    {
-        Console.WriteLine($"Creating {Path.GetFileName(name)} from {path}");
-        using var stream = new FileStream(name, FileMode.Create, FileAccess.Write);
-        using var zip = new ZipArchive(stream, ZipArchiveMode.Create);
-        foreach (var file in Directory.GetFiles(path)) {
-            var md5 = CalculateMd5(file);
-            if (Md5ToSkip.Contains(md5))
-                continue;
-
-            var entry = zip.CreateEntry(Path.GetFileName(file), CompressionLevel.SmallestSize);
-            using var writer = entry.Open();
-            using var inputStream = new FileStream(file, FileMode.Open, FileAccess.Read);
-            var buffer = new byte[32768];
-            int read;
-            while ((read = inputStream.Read(buffer, 0, buffer.Length)) > 0) {
-                writer.Write(buffer, 0, read);
-            }
-        }
-    }
-
-    private static string SanitizeFilename(string filename)
-    {
-        var reserved = new[]
-        {
-            "/",
-            "\\", "?", "*", ":",
-            "<", ">", "\"", "|",
-        };
-        foreach (var c in reserved) {
-            filename = filename.Replace(c, "_");
-        }
-        return filename;
-    }
-
-    static string CalculateMd5(string filename)
-    {
-        using var md5 = MD5.Create();
-        using var stream = File.OpenRead(filename);
-        var hash = md5.ComputeHash(stream);
-        return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
     }
 }
