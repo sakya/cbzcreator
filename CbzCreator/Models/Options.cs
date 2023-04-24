@@ -1,10 +1,15 @@
 using CmdLineArgsParser;
 using CmdLineArgsParser.Attributes;
 
-namespace CbzCreator;
+namespace CbzCreator.Models;
 
 public class Options : IOptions
 {
+    [Option("author", 'a',
+        Description = "The comic author",
+        Required = false)]
+    public string? Author { get; set; }
+
     [Option("title", 't',
         Description = "The comic title",
         Required = true)]

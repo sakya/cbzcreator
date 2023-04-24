@@ -1,5 +1,7 @@
 ﻿using System.IO.Compression;
+using CbzCreator.Models;
 using CmdLineArgsParser;
+using Newtonsoft.Json;
 
 namespace CbzCreator;
 
@@ -38,6 +40,19 @@ public static class Program
         if (!Directory.Exists(options.OutputPath))
             Directory.CreateDirectory(options.OutputPath!);
 
+        // Write info file
+        var info = new Info()
+        {
+            Title = options.Title,
+            Author = options.Author
+        };
+        using (var jsonStream = new FileStream(Path.Combine(options.OutputPath, "details.json"), FileMode.Create, FileAccess.Write)) {
+            using (var sr = new StreamWriter(jsonStream)) {
+                sr.Write(JsonConvert.SerializeObject(info, Formatting.Indented));
+            }
+        }
+
+        // Build CBZs
         foreach (var dir in Directory.GetDirectories(options.InputPath!)) {
             if (dir is "." or "..")
                 continue;
