@@ -7,14 +7,6 @@ namespace CbzCreator;
 
 public static class Program
 {
-    /// <summary>
-    /// MD5 of images to skip (ad from source sites)
-    /// </summary>
-    private static readonly HashSet<string> Md5ToSkip = new()
-    {
-        "a15f2b2e0ebd6bdda7c338135caa8398" // mangafox "more wonderful manga here"
-    };
-
     public static int Main(string[] args)
     {
         new Parser().ShowInfo(false);
@@ -44,9 +36,6 @@ public static class Program
             Console.WriteLine("Input path not found");
             return -1;
         }
-
-        if (!Directory.Exists(options.OutputPath))
-            Directory.CreateDirectory(options.OutputPath!);
 
         var info = new Info()
         {

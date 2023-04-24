@@ -45,7 +45,7 @@ public class Creator
                 var output = Path.Combine(outputPath!, $"{title} - {name}.cbz");
                 logger?.Invoke($"Creating {Path.GetFileName(output)} from {dir}");
 
-                Compress(output, dir);
+                Compress(dir, output);
             }
         }
     }
@@ -53,11 +53,11 @@ public class Creator
     /// <summary>
     /// Compress a folder into a single CBZ file
     /// </summary>
-    /// <param name="outputPath">The output file path</param>
     /// <param name="inputPath">The input folder containing images</param>
-    private static void Compress(string outputPath, string inputPath)
+    /// <param name="outputFile">The output file path</param>
+    private static void Compress(string inputPath, string outputFile)
     {
-        using var stream = new FileStream(outputPath, FileMode.Create, FileAccess.Write);
+        using var stream = new FileStream(outputFile, FileMode.Create, FileAccess.Write);
         using var zip = new ZipArchive(stream, ZipArchiveMode.Create);
         foreach (var file in Directory.GetFiles(inputPath)) {
             var md5 = CalculateMd5(file);
