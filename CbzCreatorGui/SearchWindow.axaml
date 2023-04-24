@@ -1,0 +1,31 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="CbzCreatorGui.SearchWindow"
+        WindowStartupLocation="CenterOwner"
+        Title="Title search">
+    <Grid Margin="15">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBox Name="ComicTitle" Grid.Row="0" Grid.Column="0" Watermark="Title" />
+        <Button Name="SearchButton" Grid.Row="0" Grid.Column="1" MinHeight="32" Click="OnSearchClick">
+            <i:Icon Value="fa-solid fa-magnifying-glass" />
+        </Button>
+
+        <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+                MinHeight="50" Margin="0,30,0,0">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Ok</TextBlock>
+        </Button>
+    </Grid>
+</Window>
