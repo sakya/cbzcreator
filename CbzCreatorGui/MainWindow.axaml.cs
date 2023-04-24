@@ -95,13 +95,15 @@ namespace CbzCreatorGui
             }
         }
 
-        private string? StripHtml(string? text)
+        private static string? StripHtml(string? text)
         {
             if (text != null) {
                 text = text.Replace("\r", string.Empty).Replace("\n", string.Empty);
                 text = text.Replace("<br>", "\n");
                 text = text.Replace("<b>", string.Empty);
                 text = text.Replace("</b>", string.Empty);
+                text = text.Replace("<i>", string.Empty);
+                text = text.Replace("</i>", string.Empty);
             }
 
             return text;
