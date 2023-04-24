@@ -62,6 +62,7 @@ public static class Program
         }
 
         // Build CBZs
+        var title = SanitizeFilename(options.Title!);
         foreach (var dir in Directory.GetDirectories(options.InputPath!)) {
             if (dir is "." or "..")
                 continue;
@@ -69,7 +70,7 @@ public static class Program
             var idx = dir.LastIndexOf(Path.DirectorySeparatorChar);
             if (idx >= 0) {
                 var name = SanitizeFilename(dir.Substring(idx + 1));
-                Compress(Path.Combine(options.OutputPath!, $"{options.Title} - {name}.cbz"), dir);
+                Compress(Path.Combine(options.OutputPath!, $"{title} - {name}.cbz"), dir);
             }
         }
         return 0;
@@ -101,8 +102,8 @@ public static class Program
         var reserved = new[]
         {
             "/",
-            "\\", "?", "*",
-            "<", ">", "\"", "|"
+            "\\", "?", "*", ":",
+            "<", ">", "\"", "|",
         };
         foreach (var c in reserved) {
             filename = filename.Replace(c, "_");
