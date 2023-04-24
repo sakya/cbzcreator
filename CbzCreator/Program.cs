@@ -1,4 +1,5 @@
 ﻿using System.IO.Compression;
+using System.Security.Cryptography;
 using CbzCreator.Models;
 using CmdLineArgsParser;
 using Newtonsoft.Json;
@@ -7,6 +8,14 @@ namespace CbzCreator;
 
 public static class Program
 {
+    /// <summary>
+    /// MD5 of images to skip (ad from source sites)
+    /// </summary>
+    private static readonly HashSet<string> Md5ToSkip = new()
+    {
+        "a15f2b2e0ebd6bdda7c338135caa8398" // mangafox "more wonderful manga here"
+    };
+
     public static int Main(string[] args)
     {
         new Parser().ShowInfo(false);
@@ -72,6 +81,10 @@ public static class Program
         using var stream = new FileStream(name, FileMode.Create, FileAccess.Write);
         using var zip = new ZipArchive(stream, ZipArchiveMode.Create);
         foreach (var file in Directory.GetFiles(path)) {
+            var md5 = CalculateMd5(file);
+            if (Md5ToSkip.Contains(md5))
+                continue;
+
             var entry = zip.CreateEntry(Path.GetFileName(file), CompressionLevel.SmallestSize);
             using var writer = entry.Open();
             using var inputStream = new FileStream(file, FileMode.Open, FileAccess.Read);
@@ -95,5 +108,13 @@ public static class Program
             filename = filename.Replace(c, "_");
         }
         return filename;
+    }
+
+    static string CalculateMd5(string filename)
+    {
+        using var md5 = MD5.Create();
+        using var stream = File.OpenRead(filename);
+        var hash = md5.ComputeHash(stream);
+        return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
     }
 }
