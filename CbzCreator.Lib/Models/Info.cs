@@ -27,4 +27,7 @@ public class Info
     public List<string>? Genre { get; set; }
     [JsonProperty("status")]
     public Statuses Status { get; set; }
+
+    [JsonIgnore]
+    public Uri? CoverUrl { get; set; }
 }

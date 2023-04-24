@@ -10,6 +10,8 @@ namespace CbzCreatorGui
 {
     public partial class MainWindow : Window
     {
+        private Uri? _coverUrl;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -32,7 +34,7 @@ namespace CbzCreatorGui
             var dlg = new OpenFolderDialog();
             var folder = await dlg.ShowAsync(this);
             if (!string.IsNullOrEmpty(folder)) {
-                if (sender == InputButton) {
+                if (Equals(sender, InputButton)) {
                     InputPath.Text = folder;
                 } else {
                     OutputPath.Text = folder;
@@ -64,6 +66,9 @@ namespace CbzCreatorGui
                         "HIATUS" => (int)Info.Statuses.OnHiatus,
                         _ => 0
                     };
+
+                    if (!string.IsNullOrEmpty(res.CoverImage?.ExtraLarge))
+                        _coverUrl = new Uri(res.CoverImage?.ExtraLarge!, UriKind.Absolute);
                 }
             }
         }
@@ -80,7 +85,8 @@ namespace CbzCreatorGui
                     Author = Authors.Text,
                     Artist = Artists.Text,
                     Description = Description.Text,
-                    Genre = Genres.Text?.Split(new char[] { ',' }).ToList(),
+                    Genre = Genres.Text?.Split(new[] { ',' }).ToList(),
+                    CoverUrl = _coverUrl
                 };
                 if (Status.SelectedItem is NameValue value)
                     info.Status = (Info.Statuses)(value.Value ?? Info.Statuses.Unknown);

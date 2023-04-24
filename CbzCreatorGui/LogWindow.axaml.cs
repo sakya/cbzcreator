@@ -1,10 +1,10 @@
 using System;
+using System.ComponentModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
+using Avalonia.Interactivity;
 using Avalonia.Threading;
 using CbzCreator.Lib;
 using CbzCreator.Lib.Models;
@@ -13,6 +13,7 @@ namespace CbzCreatorGui;
 
 public partial class LogWindow : Window
 {
+    private bool _running;
     private readonly CancellationTokenSource _tokenSource;
     private readonly StringBuilder _stringBuilder = new();
 
@@ -23,21 +24,41 @@ public partial class LogWindow : Window
         _tokenSource = new CancellationTokenSource();
     }
 
-    public string? InputPath { get; set; }
-    public string? OutputPath { get; set; }
-    public Info? Info { get; set; }
+    public string? InputPath { get; init; }
+    public string? OutputPath { get; init; }
+    public Info? Info { get; init; }
 
     protected override void OnOpened(EventArgs e)
     {
         if (Info == null || string.IsNullOrEmpty(InputPath) || string.IsNullOrEmpty(OutputPath))
             return;
 
-        Task.Run(() => Creator.Create(Info, InputPath, OutputPath, _tokenSource.Token, LogMessage));
+        Task.Run(() =>
+        {
+            Creator.Create(Info, InputPath, OutputPath, _tokenSource.Token, LogMessage);
+            _running = false;
+            Dispatcher.UIThread.InvokeAsync(() => ButtonText.Text = "Close");
+        });
     }
 
     private void LogMessage(string message)
     {
         _stringBuilder.AppendLine(message);
         Dispatcher.UIThread.InvokeAsync(() => { Log.Text = _stringBuilder.ToString(); });
+    }
+
+    private void OnButtonClick(object? sender, RoutedEventArgs e)
+    {
+        if (!_running) {
+            Close();
+        } else {
+            _tokenSource.Cancel();
+        }
+    }
+
+    protected override void OnClosing(CancelEventArgs e)
+    {
+        if (_running)
+            e.Cancel = true;
     }
 }

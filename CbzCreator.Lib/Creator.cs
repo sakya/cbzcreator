@@ -5,8 +5,10 @@ using Newtonsoft.Json;
 
 namespace CbzCreator.Lib;
 
-public class Creator
+public static class Creator
 {
+    private static readonly HttpClient HttpClient = new();
+
     /// <summary>
     /// MD5 of images to skip (ad from source sites)
     /// </summary>
@@ -26,13 +28,19 @@ public class Creator
     public static void Create(Info info, string inputPath, string outputPath, CancellationToken? token = null, Action<string>? logger = null)
     {
         if (!Directory.Exists(outputPath))
-            Directory.CreateDirectory(outputPath!);
+            Directory.CreateDirectory(outputPath);
 
         // Write info file
         using (var jsonStream = new FileStream(Path.Combine(outputPath, "details.json"), FileMode.Create, FileAccess.Write)) {
             using (var sr = new StreamWriter(jsonStream)) {
                 sr.Write(JsonConvert.SerializeObject(info, Formatting.Indented));
             }
+        }
+
+        // Download cover
+        if (info.CoverUrl != null) {
+            var imageBytes = HttpClient.GetByteArrayAsync(info.CoverUrl).Result;
+            File.WriteAllBytesAsync(Path.Combine(outputPath, "cover.jpg"), imageBytes);
         }
 
         // Build CBZs
@@ -47,7 +55,7 @@ public class Creator
             var idx = dir.LastIndexOf(Path.DirectorySeparatorChar);
             if (idx >= 0) {
                 var name = SanitizeFilename(dir.Substring(idx + 1));
-                var output = Path.Combine(outputPath!, $"{title} - {name}.cbz");
+                var output = Path.Combine(outputPath, $"{title} - {name}.cbz");
                 logger?.Invoke($"Creating {Path.GetFileName(output)} from {dir}");
 
                 Compress(dir, output, token);
@@ -60,6 +68,7 @@ public class Creator
     /// </summary>
     /// <param name="inputPath">The input folder containing images</param>
     /// <param name="outputFile">The output file path</param>
+    /// <param name="token">The <see cref="CancellationToken"/></param>
     private static void Compress(string inputPath, string outputFile, CancellationToken? token)
     {
         using var stream = new FileStream(outputFile, FileMode.Create, FileAccess.Write);

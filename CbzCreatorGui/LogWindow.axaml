@@ -15,8 +15,9 @@
 
         <TextBox Name="Log" AcceptsReturn="True" IsReadOnly="True" TextWrapping="NoWrap" />
 
-        <Button Grid.Row="1" HorizontalAlignment="Stretch" MinHeight="50" Margin="0,30,0,0">
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Cancel</TextBlock>
+        <Button Grid.Row="1" HorizontalAlignment="Stretch" MinHeight="50" Margin="0,30,0,0"
+                Click="OnButtonClick">
+            <TextBlock Name="ButtonText" HorizontalAlignment="Center" VerticalAlignment="Center">Cancel</TextBlock>
         </Button>
     </Grid>
 </Window>
