@@ -10,8 +10,6 @@ namespace CbzCreatorGui
 {
     public partial class MainWindow : Window
     {
-        private Uri? _coverUrl;
-
         public MainWindow()
         {
             InitializeComponent();
@@ -55,9 +53,7 @@ namespace CbzCreatorGui
                     Authors.Text = res.Staff?.Author?.Node?.Name?.Full;
                     Artists.Text = res.Staff?.Artist?.Node?.Name?.Full;
                     Description.Text = StripHtml(res.Description);
-                    if (res.Genres != null)
-                        Genres.Text = string.Join(", ", res.Genres);
-
+                    Genres.Text = res.Genres != null ? string.Join(", ", res.Genres) : string.Empty;
                     Status.SelectedIndex = res.Status switch
                     {
                         "FINISHED" => (int)Info.Statuses.PublishingFinished,
@@ -67,8 +63,7 @@ namespace CbzCreatorGui
                         _ => 0
                     };
 
-                    if (!string.IsNullOrEmpty(res.CoverImage?.ExtraLarge))
-                        _coverUrl = new Uri(res.CoverImage?.ExtraLarge!, UriKind.Absolute);
+                    CoverUrl.Text = !string.IsNullOrEmpty(res.CoverImage?.ExtraLarge) ? res.CoverImage?.ExtraLarge : string.Empty;
                 }
             }
         }
@@ -86,7 +81,7 @@ namespace CbzCreatorGui
                     Artist = Artists.Text,
                     Description = Description.Text,
                     Genre = Genres.Text?.Split(new[] { ',' }).ToList(),
-                    CoverUrl = _coverUrl
+                    CoverUrl = !string.IsNullOrEmpty(CoverUrl.Text) ? new Uri(CoverUrl.Text) : null
                 };
                 if (Status.SelectedItem is NameValue value)
                     info.Status = (Info.Statuses)(value.Value ?? Info.Statuses.Unknown);

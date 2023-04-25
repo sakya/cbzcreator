@@ -25,6 +25,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -60,8 +61,10 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
+            <TextBox Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Watermark="Cover url" Margin="0,15,0,0"
+                     Name="CoverUrl"/>
 
-            <Button Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+            <Button Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
                     MinHeight="50" Margin="0,30,0,0" Click="OnCreateClick"
                     Classes="Accent">
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Create CBZ</TextBlock>
