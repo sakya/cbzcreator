@@ -9,6 +9,7 @@
         x:Class="CbzCreatorGui.SearchWindow"
         WindowStartupLocation="CenterOwner"
         Width="500"
+        MinWidth="200" MinHeight="300"
         Title="Title search">
 
     <Window.Resources>
