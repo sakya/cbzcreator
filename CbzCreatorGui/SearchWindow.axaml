@@ -71,7 +71,7 @@
 
         <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
                 Name="OkButton" MinHeight="50" IsEnabled="False"
-                Click="OnOkClick">
+                Click="OnOkClick" Classes="Accent">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Ok</TextBlock>
         </Button>
     </Grid>

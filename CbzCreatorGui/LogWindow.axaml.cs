@@ -35,9 +35,17 @@ public partial class LogWindow : Window
 
         Task.Run(() =>
         {
-            Creator.Create(Info, InputPath, OutputPath, _tokenSource.Token, LogMessage);
+            try {
+                Creator.Create(Info, InputPath, OutputPath, _tokenSource.Token, LogMessage);
+            } catch (Exception ex) {
+                LogMessage($"Error: {ex.Message}");
+            }
             _running = false;
-            Dispatcher.UIThread.InvokeAsync(() => ButtonText.Text = "Close");
+            Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                Button.Classes.Add("Accent");
+                ButtonText.Text = "Close";
+            });
         });
     }
 

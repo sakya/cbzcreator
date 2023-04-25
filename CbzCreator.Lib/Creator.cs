@@ -2,6 +2,7 @@ using System.IO.Compression;
 using System.Security.Cryptography;
 using CbzCreator.Lib.Models;
 using Newtonsoft.Json;
+using SixLabors.ImageSharp.Formats.Jpeg;
 
 namespace CbzCreator.Lib;
 
@@ -27,10 +28,13 @@ public static class Creator
     /// <param name="logger">The logger function</param>
     public static void Create(Info info, string inputPath, string outputPath, CancellationToken? token = null, Action<string>? logger = null)
     {
+        if (!Directory.Exists(inputPath))
+            throw new Exception($"Cannot access path {inputPath}");
         if (!Directory.Exists(outputPath))
             Directory.CreateDirectory(outputPath);
 
         // Write info file
+        logger?.Invoke($"Writing {Path.Combine(outputPath, "details.json")}");
         using (var jsonStream = new FileStream(Path.Combine(outputPath, "details.json"), FileMode.Create, FileAccess.Write)) {
             using (var sr = new StreamWriter(jsonStream)) {
                 sr.Write(JsonConvert.SerializeObject(info, Formatting.Indented));
@@ -39,6 +43,8 @@ public static class Creator
 
         // Download cover
         if (info.CoverUrl != null) {
+            logger?.Invoke($"Downloading cover from {info.CoverUrl}");
+            DownloadCover(info.CoverUrl, Path.Join(outputPath, "cover.jpg"));
             var imageBytes = HttpClient.GetByteArrayAsync(info.CoverUrl).Result;
             File.WriteAllBytesAsync(Path.Combine(outputPath, "cover.jpg"), imageBytes);
         }
@@ -122,5 +128,22 @@ public static class Creator
         using var stream = File.OpenRead(filePath);
         var hash = md5.ComputeHash(stream);
         return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+    }
+
+    /// <summary>
+    /// Download the cover and convert it to jpg format
+    /// </summary>
+    /// <param name="url">The cover url</param>
+    /// <param name="filePath">The destination path</param>
+    private static void DownloadCover(Uri url, string filePath)
+    {
+        var imageBytes = HttpClient.GetByteArrayAsync(url).Result;
+
+        using var ms = new MemoryStream(imageBytes);
+        using var img = Image.Load(ms);
+        img.Save(filePath, new JpegEncoder()
+        {
+            Quality = 90
+        });
     }
 }

@@ -3,5 +3,12 @@
              x:Class="CbzCreatorGui.App">
     <Application.Styles>
         <FluentTheme Mode="Dark"/>
+
+        <Style Selector="Button.Accent">
+            <Setter Property="Background" Value="{DynamicResource SystemAccentColor}"/>
+        </Style>
+        <Style Selector="Button.Accent:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource HighlightColor}"/>
+        </Style>
     </Application.Styles>
 </Application>
