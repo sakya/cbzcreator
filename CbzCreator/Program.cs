@@ -40,7 +40,11 @@ public static class Program
         var info = new Info()
         {
             Title = options.Title,
-            Author = options.Author
+            Author = options.Author,
+            Artist = options.Artist,
+            Description = options.Description,
+            Genre = options.Genre,
+            CoverUrl = options.CoverUrl
         };
         Creator.Create(info, options.InputPath, options.OutputPath, null, Console.WriteLine);
 
