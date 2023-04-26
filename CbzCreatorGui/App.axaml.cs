@@ -6,9 +6,9 @@ using Avalonia.Media;
 
 namespace CbzCreatorGui
 {
-    public partial class App : Application
+    public class App : Application
     {
-        public Avalonia.Controls.Window? MainWindow { get; set; }
+        public Window? MainWindow { get; set; }
 
         public override void Initialize()
         {
