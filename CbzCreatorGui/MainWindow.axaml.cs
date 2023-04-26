@@ -15,7 +15,7 @@ namespace CbzCreatorGui
         {
             InitializeComponent();
 
-            List<NameValue> statuses = new List<NameValue>()
+            var statuses = new List<NameValue>()
             {
                 new("Unknown", Info.Statuses.Unknown),
                 new("Ongoing", Info.Statuses.Ongoing),
