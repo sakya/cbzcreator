@@ -38,7 +38,7 @@ public partial class LogWindow : Window
             try {
                 Creator.Create(Info, InputPath, OutputPath, _tokenSource.Token, LogMessage);
             } catch (Exception ex) {
-                LogMessage($"Error: {ex.Message}");
+                LogMessage(Creator.LogLevel.Error, ex.Message);
             }
             _running = false;
             Dispatcher.UIThread.InvokeAsync(() =>
@@ -49,9 +49,17 @@ public partial class LogWindow : Window
         });
     }
 
-    private void LogMessage(string message)
+    private void LogMessage(Creator.LogLevel level, string message)
     {
-        _stringBuilder.AppendLine(message);
+        var prefix = level switch
+        {
+            Creator.LogLevel.Debug => "[DBG]",
+            Creator.LogLevel.Info => "[INF]",
+            Creator.LogLevel.Warning => "[WRN]",
+            Creator.LogLevel.Error => "[ERR]",
+            _ => string.Empty
+        };
+        _stringBuilder.AppendLine($"{prefix}{message}");
         Dispatcher.UIThread.InvokeAsync(() => { Log.Text = _stringBuilder.ToString(); });
     }
 

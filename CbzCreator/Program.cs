@@ -46,7 +46,19 @@ public static class Program
             Genre = options.Genre,
             CoverUrl = options.CoverUrl
         };
-        Creator.Create(info, options.InputPath, options.OutputPath, null, Console.WriteLine);
+        Creator.Create(info, options.InputPath, options.OutputPath, null,
+            (level, message) =>
+            {
+                var prefix = level switch
+                {
+                    Creator.LogLevel.Debug => "[DBG]",
+                    Creator.LogLevel.Info => "[INF]",
+                    Creator.LogLevel.Warning => "[WRN]",
+                    Creator.LogLevel.Error => "[ERR]",
+                    _ => string.Empty
+                };
+                Console.WriteLine($"{prefix}{message}");
+            });
 
         return 0;
     }

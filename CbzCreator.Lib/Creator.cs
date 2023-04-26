@@ -34,7 +34,7 @@ public static class Creator
     /// <param name="outputPath">The output path</param>
     /// <param name="token">The <see cref="CancellationToken"/></param>
     /// <param name="logger">The logger function</param>
-    public static void Create(Info info, string inputPath, string outputPath, CancellationToken? token = null, Action<string>? logger = null)
+    public static void Create(Info info, string inputPath, string outputPath, CancellationToken? token = null, Action<LogLevel, string>? logger = null)
     {
         if (!Directory.Exists(inputPath))
             throw new Exception($"Cannot access path {inputPath}");
@@ -42,7 +42,7 @@ public static class Creator
             Directory.CreateDirectory(outputPath);
 
         // Write info file
-        logger?.Invoke($"Writing {Path.Combine(outputPath, "details.json")}");
+        logger?.Invoke(LogLevel.Info, $"Writing {Path.Combine(outputPath, "details.json")}");
         using (var jsonStream = new FileStream(Path.Combine(outputPath, "details.json"), FileMode.Create, FileAccess.Write)) {
             using (var sr = new StreamWriter(jsonStream)) {
                 sr.Write(JsonConvert.SerializeObject(info, Formatting.Indented));
@@ -51,7 +51,7 @@ public static class Creator
 
         // Download cover
         if (info.CoverUrl != null) {
-            logger?.Invoke($"Downloading cover from {info.CoverUrl}");
+            logger?.Invoke(LogLevel.Info,$"Downloading cover from {info.CoverUrl}");
             DownloadCover(info.CoverUrl, Path.Join(outputPath, "cover.jpg"));
             var imageBytes = HttpClient.GetByteArrayAsync(info.CoverUrl).Result;
             File.WriteAllBytesAsync(Path.Combine(outputPath, "cover.jpg"), imageBytes);
@@ -70,7 +70,7 @@ public static class Creator
             if (idx >= 0) {
                 var name = SanitizeFilename(dir.Substring(idx + 1));
                 var output = Path.Combine(outputPath, $"{title} - {name}.cbz");
-                logger?.Invoke($"Creating {Path.GetFileName(output)} from {dir}");
+                logger?.Invoke(LogLevel.Info, $"Creating {Path.GetFileName(output)} from {dir}");
 
                 Compress(dir, output, token);
             }
