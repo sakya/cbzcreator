@@ -1,8 +1,21 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="CbzCreatorGui.App">
+
+    <Application.Resources>
+        <Color x:Key="DebugColor">#bfbfbf</Color>
+        <Color x:Key="InfoColor">#5bc0de</Color>
+        <Color x:Key="WarningColor">#f0ad4e</Color>
+        <Color x:Key="DangerColor">#d9534f</Color>
+        <Color x:Key="SuccessColor">#28a745</Color>
+    </Application.Resources>
+
     <Application.Styles>
         <FluentTheme Mode="Dark"/>
+
+        <Style Selector="TextBox.Error">
+            <Setter Property="BorderBrush" Value="{StaticResource DangerColor}" />
+        </Style>
 
         <Style Selector="Button.Accent">
             <Setter Property="Background" Value="{DynamicResource SystemAccentColor}"/>

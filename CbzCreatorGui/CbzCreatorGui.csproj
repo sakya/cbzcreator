@@ -6,9 +6,10 @@
         <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
         <TrimMode>copyused</TrimMode>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+        <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
     </PropertyGroup>
     <ItemGroup>
-        <None Remove=".gitignore" />
+        <AvaloniaResource Include="Assets\**" />
     </ItemGroup>
     <ItemGroup>
         <!--This helps with theme dll-s trimming.
@@ -33,5 +34,8 @@
       <Reference Include="Newtonsoft.Json">
         <HintPath>..\..\..\.nuget\packages\newtonsoft.json\13.0.3\lib\net6.0\Newtonsoft.Json.dll</HintPath>
       </Reference>
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Assets\" />
     </ItemGroup>
 </Project>

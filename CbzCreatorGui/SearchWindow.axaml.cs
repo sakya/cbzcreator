@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Newtonsoft.Json;
@@ -66,6 +67,12 @@ public partial class SearchWindow : Window
     private void OnListSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         OkButton.IsEnabled = List.SelectedItems?.Count > 0;
+    }
+
+    private void OnComicTitleKeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Return)
+            OnSearchClick(null, new RoutedEventArgs());
     }
 
     private void OnOkClick(object? sender, RoutedEventArgs e)

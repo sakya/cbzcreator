@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using CbzCreator.Lib.Models;
 using CbzCreatorGui.Models;
@@ -70,10 +71,7 @@ namespace CbzCreatorGui
 
         private async void OnCreateClick(object? sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(InputPath.Text) &&
-                !string.IsNullOrEmpty(OutputPath.Text) &&
-                !string.IsNullOrEmpty(ComicTitle.Text)) {
-
+            if (Validate()) {
                 var info = new Info()
                 {
                     Title = ComicTitle.Text,
@@ -94,6 +92,48 @@ namespace CbzCreatorGui
                 };
                 await dlg.ShowDialog(this);
             }
+        }
+
+        private void OnComicTitleKeyDown(object? sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+                OnSearchClick(null, new RoutedEventArgs());
+        }
+
+        private bool Validate()
+        {
+            var res = true;
+
+            InputPath.Classes.Remove("Error");
+            OutputPath.Classes.Remove("Error");
+            ComicTitle.Classes.Remove("Error");
+            CoverUrl.Classes.Remove("Error");
+
+            if (string.IsNullOrEmpty(InputPath.Text?.Trim())) {
+                InputPath.Classes.Add("Error");
+                res = false;
+            }
+
+            if (string.IsNullOrEmpty(OutputPath.Text?.Trim())) {
+                OutputPath.Classes.Add("Error");
+                res = false;
+            }
+
+            if (string.IsNullOrEmpty(ComicTitle.Text?.Trim())) {
+                ComicTitle.Classes.Add("Error");
+                res = false;
+            }
+
+            if (!string.IsNullOrEmpty(CoverUrl.Text?.Trim())) {
+                try {
+                    var uri = new Uri(CoverUrl.Text);
+                } catch (Exception) {
+                    CoverUrl.Classes.Add("Error");
+                    res = false;
+                }
+            }
+
+            return res;
         }
 
         private static string? StripHtml(string? text)

@@ -7,6 +7,7 @@
         xmlns:converters="clr-namespace:CbzCreatorGui.Converters"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="CbzCreatorGui.SearchWindow"
+        Icon="/Assets/icon.ico"
         WindowStartupLocation="CenterOwner"
         Width="500"
         MinWidth="200" MinHeight="300"
@@ -37,7 +38,8 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <TextBox Name="ComicTitle" Grid.Row="0" Grid.Column="0" Watermark="Title" />
+            <TextBox Name="ComicTitle" Grid.Row="0" Grid.Column="0" Watermark="Title"
+                     KeyDown="OnComicTitleKeyDown"/>
             <Button Name="SearchButton" Grid.Row="0" Grid.Column="1" MinHeight="32" Click="OnSearchClick">
                 <i:Icon Value="fa-solid fa-magnifying-glass" />
             </Button>

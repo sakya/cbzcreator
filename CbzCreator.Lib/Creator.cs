@@ -18,6 +18,14 @@ public static class Creator
         "a15f2b2e0ebd6bdda7c338135caa8398" // mangafox "more wonderful manga here"
     };
 
+    public enum LogLevel
+    {
+        Debug,
+        Info,
+        Warning,
+        Error
+    }
+
     /// <summary>
     /// Create the CBZ files
     /// </summary>
