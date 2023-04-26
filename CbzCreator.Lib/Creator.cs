@@ -62,8 +62,10 @@ public static class Creator
         var dirs = Directory.GetDirectories(inputPath);
         Array.Sort(dirs);
         foreach (var dir in dirs) {
-            if (token?.IsCancellationRequested == true)
+            if (token?.IsCancellationRequested == true) {
+                logger?.Invoke(LogLevel.Warning, "User aborted");
                 return;
+            }
 
             if (dir is "." or "..")
                 continue;
@@ -99,7 +101,7 @@ public static class Creator
             logger?.Invoke(LogLevel.Debug, $"Processing {file}");
             var md5 = CalculateMd5(file);
             if (Md5ToSkip.Contains(md5)) {
-                logger?.Invoke(LogLevel.Info, $"Skipped file {file}");
+                logger?.Invoke(LogLevel.Warning, $"Skipped file {file}");
                 continue;
             }
 

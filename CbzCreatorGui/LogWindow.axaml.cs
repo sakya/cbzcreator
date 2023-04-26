@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
 using System.Threading;
@@ -8,6 +9,7 @@ using Avalonia.Interactivity;
 using Avalonia.Threading;
 using CbzCreator.Lib;
 using CbzCreator.Lib.Models;
+using CbzCreatorGui.Models;
 
 namespace CbzCreatorGui;
 
@@ -15,12 +17,13 @@ public partial class LogWindow : Window
 {
     private bool _running;
     private readonly CancellationTokenSource _tokenSource;
-    private readonly StringBuilder _stringBuilder = new();
+    private readonly ObservableCollection<LogMessage> _log = new();
 
     public LogWindow()
     {
         InitializeComponent();
 
+        LogList.Items = _log;
         _tokenSource = new CancellationTokenSource();
     }
 
@@ -35,6 +38,7 @@ public partial class LogWindow : Window
 
         Task.Run(() =>
         {
+            _running = true;
             try {
                 Creator.Create(Info, InputPath, OutputPath, _tokenSource.Token, LogMessage);
             } catch (Exception ex) {
@@ -56,13 +60,26 @@ public partial class LogWindow : Window
 
         var prefix = level switch
         {
+            Creator.LogLevel.Debug => "[DBG]",
             Creator.LogLevel.Info => "[INF]",
             Creator.LogLevel.Warning => "[WRN]",
             Creator.LogLevel.Error => "[ERR]",
             _ => string.Empty
         };
-        _stringBuilder.AppendLine($"{prefix}{message}");
-        Dispatcher.UIThread.InvokeAsync(() => { Log.Text = _stringBuilder.ToString(); });
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            while (_log.Count > 200)
+                _log.RemoveAt(0);
+
+            _log.Add(new LogMessage()
+            {
+                Level = level,
+                Message =$"{prefix}{message}"
+            });
+            App.UpdateLayout();
+            Log.ScrollToEnd();
+        });
     }
 
     private void OnButtonClick(object? sender, RoutedEventArgs e)

@@ -54,6 +54,7 @@ public static class Program
 
                 var prefix = level switch
                 {
+                    Creator.LogLevel.Debug => "[DBG]",
                     Creator.LogLevel.Info => "[INF]",
                     Creator.LogLevel.Warning => "[WRN]",
                     Creator.LogLevel.Error => "[ERR]",

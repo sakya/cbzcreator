@@ -2,6 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:converters="clr-namespace:CbzCreatorGui.Converters"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="CbzCreatorGui.LogWindow"
         Icon="/Assets/icon.ico"
@@ -9,6 +10,11 @@
         Width="500" Height="500"
         MinWidth="400" MinHeight="400"
         Title="Log">
+
+    <Window.Resources>
+        <converters:LogLevelToColorConverter x:Key="LogLevelToColorConverter"/>
+    </Window.Resources>
+
     <Panel>
         <ExperimentalAcrylicBorder IsHitTestVisible="False">
             <ExperimentalAcrylicBorder.Material>
@@ -25,7 +31,23 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <TextBox Name="Log" AcceptsReturn="True" IsReadOnly="True" TextWrapping="NoWrap" />
+            <ScrollViewer Name="Log">
+                <ListBox Name="LogList" FontFamily="Consolas"
+                         VirtualizationMode="None">
+                    <ListBox.Styles>
+                        <Style Selector="ListBoxItem">
+                            <Setter Property="Padding" Value="0"/>
+                        </Style>
+                    </ListBox.Styles>
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Message}"
+                                       Foreground="{Binding Level, Converter={StaticResource LogLevelToColorConverter}}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </ScrollViewer>
 
             <Button Grid.Row="1" HorizontalAlignment="Stretch" MinHeight="50" Margin="0,30,0,0"
                     Name="Button" Click="OnButtonClick">
