@@ -51,9 +51,11 @@ public partial class LogWindow : Window
 
     private void LogMessage(Creator.LogLevel level, string message)
     {
+        if (level < Creator.LogLevel.Info)
+            return;
+
         var prefix = level switch
         {
-            Creator.LogLevel.Debug => "[DBG]",
             Creator.LogLevel.Info => "[INF]",
             Creator.LogLevel.Warning => "[WRN]",
             Creator.LogLevel.Error => "[ERR]",

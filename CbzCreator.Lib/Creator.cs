@@ -74,7 +74,7 @@ public static class Creator
                 var output = Path.Combine(outputPath, $"{title} - {name}.cbz");
                 logger?.Invoke(LogLevel.Info, $"Creating {Path.GetFileName(output)} from {dir}");
 
-                Compress(dir, output, token);
+                Compress(dir, output, token, logger);
             }
         }
     }
@@ -85,7 +85,7 @@ public static class Creator
     /// <param name="inputPath">The input folder containing images</param>
     /// <param name="outputFile">The output file path</param>
     /// <param name="token">The <see cref="CancellationToken"/></param>
-    private static void Compress(string inputPath, string outputFile, CancellationToken? token)
+    private static void Compress(string inputPath, string outputFile, CancellationToken? token, Action<LogLevel, string>? logger = null)
     {
         using var stream = new FileStream(outputFile, FileMode.Create, FileAccess.Write);
         using var zip = new ZipArchive(stream, ZipArchiveMode.Create);
@@ -96,9 +96,12 @@ public static class Creator
             if (token?.IsCancellationRequested == true)
                 return;
 
+            logger?.Invoke(LogLevel.Debug, $"Processing {file}");
             var md5 = CalculateMd5(file);
-            if (Md5ToSkip.Contains(md5))
+            if (Md5ToSkip.Contains(md5)) {
+                logger?.Invoke(LogLevel.Info, $"Skipped file {file}");
                 continue;
+            }
 
             var entry = zip.CreateEntry(Path.GetFileName(file), CompressionLevel.SmallestSize);
             using var writer = entry.Open();

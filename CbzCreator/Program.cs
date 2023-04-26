@@ -49,9 +49,11 @@ public static class Program
         Creator.Create(info, options.InputPath, options.OutputPath, null,
             (level, message) =>
             {
+                if (level < Creator.LogLevel.Info)
+                    return;
+
                 var prefix = level switch
                 {
-                    Creator.LogLevel.Debug => "[DBG]",
                     Creator.LogLevel.Info => "[INF]",
                     Creator.LogLevel.Warning => "[WRN]",
                     Creator.LogLevel.Error => "[ERR]",
