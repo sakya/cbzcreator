@@ -1,4 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="..\SolutionInfo.proj" />
+    <PropertyGroup>
+        <AssemblyTitle>CBZ creator</AssemblyTitle>
+    </PropertyGroup>
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
@@ -7,17 +11,10 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <PropertyGroup>
-        <AssemblyTitle>CBZ creator</AssemblyTitle>
-        <Authors>Paolo Iommarini</Authors>
-        <Copyright>Copyright © 2023, Paolo Iommarini</Copyright>
-        <Version>0.1.0.0</Version>        
-    </PropertyGroup>
-    
     <ItemGroup>
       <PackageReference Include="CmdLineArgsParser" Version="0.7.4" />
     </ItemGroup>
-    
+
     <ItemGroup>
       <ProjectReference Include="..\CbzCreator.Lib\CbzCreator.Lib.csproj" />
     </ItemGroup>
