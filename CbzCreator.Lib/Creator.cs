@@ -59,7 +59,9 @@ public static class Creator
 
         // Build CBZs
         var title = SanitizeFilename(info.Title!);
-        foreach (var dir in Directory.GetDirectories(inputPath)) {
+        var dirs = Directory.GetDirectories(inputPath);
+        Array.Sort(dirs);
+        foreach (var dir in dirs) {
             if (token?.IsCancellationRequested == true)
                 return;
 
@@ -87,7 +89,10 @@ public static class Creator
     {
         using var stream = new FileStream(outputFile, FileMode.Create, FileAccess.Write);
         using var zip = new ZipArchive(stream, ZipArchiveMode.Create);
-        foreach (var file in Directory.GetFiles(inputPath)) {
+
+        var files = Directory.GetFiles(inputPath);
+        Array.Sort(files);
+        foreach (var file in files) {
             if (token?.IsCancellationRequested == true)
                 return;
 
