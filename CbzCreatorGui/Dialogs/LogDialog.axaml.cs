@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Markup.Xaml;
 using Avalonia.SingleWindow.Abstracts;
 using Avalonia.Threading;
@@ -25,8 +26,12 @@ public partial class LogDialog : BaseDialog
     {
         InitializeComponent();
 
+        VerticalAlignment = VerticalAlignment.Stretch;
+        HorizontalAlignment = HorizontalAlignment.Stretch;
+
         LogList.Items = _log;
         _tokenSource = new CancellationTokenSource();
+        Closing += OnClosing;
     }
 
     public string? InputPath { get; init; }
@@ -93,7 +98,7 @@ public partial class LogDialog : BaseDialog
         }
     }
 
-    protected void OnClosing(CancelEventArgs e)
+    private void OnClosing(object? sender, CancelEventArgs e)
     {
         if (_running)
             e.Cancel = true;
