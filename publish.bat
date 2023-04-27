@@ -1,4 +1,6 @@
 rd /s /q .\dist\win-x64
+rd /s /q .\CbzCreator\bin
+rd /s /q .\CbzCreator\obj
 rd /s /q .\CbzCreator.Lib\bin
 rd /s /q .\CbzCreator.Lib\obj
 rd /s /q .\CbzCreatorGui\bin
