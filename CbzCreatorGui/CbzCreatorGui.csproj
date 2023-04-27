@@ -27,8 +27,8 @@
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.19" />
         <PackageReference Include="Avalonia.SingleWindow" Version="1.1.3" />
-        <PackageReference Include="Projektanker.Icons.Avalonia.FontAwesome" Version="5.12.0" />
-        <PackageReference Include="XamlNameReferenceGenerator" Version="1.3.4" />
+        <PackageReference Include="Projektanker.Icons.Avalonia.FontAwesome" Version="5.13.0" />
+        <PackageReference Include="XamlNameReferenceGenerator" Version="1.6.1" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\CbzCreator.Lib\CbzCreator.Lib.csproj" />
