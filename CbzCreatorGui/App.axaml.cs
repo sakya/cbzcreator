@@ -37,7 +37,7 @@ namespace CbzCreatorGui
             if (Current is App app && app.MainWindow != null) {
                 var resource = app.MainWindow.FindResource(name);
                 if (resource is Color col)
-                    return (Color)resource;
+                    return col;
             }
             return null;
         }
