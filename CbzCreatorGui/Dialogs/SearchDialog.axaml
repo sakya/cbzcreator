@@ -1,21 +1,16 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
-        xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
-        xmlns:converters="clr-namespace:CbzCreatorGui.Converters"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="CbzCreatorGui.SearchWindow"
-        Icon="/Assets/icon.ico"
-        WindowStartupLocation="CenterOwner"
-        Width="500"
-        MinWidth="200" MinHeight="300"
-        Title="Title search">
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+             xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
+             xmlns:converters="clr-namespace:CbzCreatorGui.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="CbzCreatorGui.SearchDialog">
 
-    <Window.Resources>
+    <UserControl.Resources>
         <converters:TitleConverter x:Key="TitleConverter"/>
-    </Window.Resources>
+    </UserControl.Resources>
 
     <Panel>
         <ExperimentalAcrylicBorder IsHitTestVisible="False">
@@ -27,6 +22,7 @@
                     MaterialOpacity="0.65" />
             </ExperimentalAcrylicBorder.Material>
         </ExperimentalAcrylicBorder>
+
         <Grid Margin="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -89,4 +85,4 @@
             </Button>
         </Grid>
     </Panel>
-</Window>
+</UserControl>

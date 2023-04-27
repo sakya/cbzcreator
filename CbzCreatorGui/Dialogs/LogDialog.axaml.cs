@@ -6,20 +6,22 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Markup.Xaml;
+using Avalonia.SingleWindow.Abstracts;
 using Avalonia.Threading;
 using CbzCreator.Lib;
 using CbzCreator.Lib.Models;
 using CbzCreatorGui.Models;
 
-namespace CbzCreatorGui;
+namespace CbzCreatorGui.Dialogs;
 
-public partial class LogWindow : Window
+public partial class LogDialog : BaseDialog
 {
     private bool _running;
     private readonly CancellationTokenSource _tokenSource;
     private readonly ObservableCollection<LogMessage> _log = new();
 
-    public LogWindow()
+    public LogDialog()
     {
         InitializeComponent();
 
@@ -31,7 +33,7 @@ public partial class LogWindow : Window
     public string? OutputPath { get; init; }
     public Info? Info { get; init; }
 
-    protected override void OnOpened(EventArgs e)
+    protected override void Opened()
     {
         if (Info == null || string.IsNullOrEmpty(InputPath) || string.IsNullOrEmpty(OutputPath))
             return;
@@ -91,7 +93,7 @@ public partial class LogWindow : Window
         }
     }
 
-    protected override void OnClosing(CancelEventArgs e)
+    protected void OnClosing(CancelEventArgs e)
     {
         if (_running)
             e.Cancel = true;

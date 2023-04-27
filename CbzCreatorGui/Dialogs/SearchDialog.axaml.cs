@@ -6,27 +6,31 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Markup.Xaml;
+using Avalonia.SingleWindow.Abstracts;
 using Newtonsoft.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace CbzCreatorGui;
 
-public partial class SearchWindow : Window
+public partial class SearchDialog : BaseDialog
 {
     private static HttpClient _client = new()
     {
         BaseAddress = new Uri("https://graphql.anilist.co/"),
     };
 
-    public SearchWindow()
+    public SearchDialog()
     {
         InitializeComponent();
+        VerticalAlignment = VerticalAlignment.Stretch;
+        HorizontalAlignment = HorizontalAlignment.Stretch;
     }
 
     public string? SearchTitle { get; set; }
 
-    protected override void OnOpened(EventArgs e)
+    protected override void Opened()
     {
         ComicTitle.Text = SearchTitle;
         OnSearchClick(null, new RoutedEventArgs());
