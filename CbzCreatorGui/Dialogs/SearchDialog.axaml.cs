@@ -2,21 +2,18 @@ using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Markup.Xaml;
 using Avalonia.SingleWindow.Abstracts;
 using Newtonsoft.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
-namespace CbzCreatorGui;
+namespace CbzCreatorGui.Dialogs;
 
 public partial class SearchDialog : BaseDialog
 {
-    private static HttpClient _client = new()
+    private static readonly HttpClient Client = new()
     {
         BaseAddress = new Uri("https://graphql.anilist.co/"),
     };
@@ -42,13 +39,15 @@ public partial class SearchDialog : BaseDialog
             SearchButton.IsEnabled = false;
             await Search(ComicTitle.Text);
             SearchButton.IsEnabled = true;
+        } else {
+            List.Items = null;
         }
     }
 
     private async Task<bool> Search(string title)
     {
         using StringContent jsonContent = new(
-            JsonSerializer.Serialize(new
+            JsonConvert.SerializeObject(new
             {
                 query = "\n query ($search: String) {\n Page(page: 1, perPage: 20) {\n media(search: $search, type: MANGA, format_not: NOVEL) {\n id\n title {\n romaji\n english\n }\n status\n description\n genres\n format\n coverImage { extraLarge }\n staff(perPage: 25) {\n edges {\n role\n node {\n id\n name { full }\n }\n }\n }\n }\n }\n }\n",
                 variables = new {
@@ -57,7 +56,7 @@ public partial class SearchDialog : BaseDialog
             }),
             Encoding.UTF8,
             "application/json");
-        using HttpResponseMessage response = await _client.PostAsync(
+        using HttpResponseMessage response = await Client.PostAsync(
             string.Empty,
             jsonContent);
 

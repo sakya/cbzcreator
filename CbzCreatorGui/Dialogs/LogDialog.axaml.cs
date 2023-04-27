@@ -1,13 +1,10 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Markup.Xaml;
 using Avalonia.SingleWindow.Abstracts;
 using Avalonia.Threading;
 using CbzCreator.Lib;
