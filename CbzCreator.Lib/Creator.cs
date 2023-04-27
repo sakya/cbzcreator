@@ -87,6 +87,7 @@ public static class Creator
     /// <param name="inputPath">The input folder containing images</param>
     /// <param name="outputFile">The output file path</param>
     /// <param name="token">The <see cref="CancellationToken"/></param>
+    /// <param name="logger">The logger function</param>
     private static void Compress(string inputPath, string outputFile, CancellationToken? token, Action<LogLevel, string>? logger = null)
     {
         using var stream = new FileStream(outputFile, FileMode.Create, FileAccess.Write);
