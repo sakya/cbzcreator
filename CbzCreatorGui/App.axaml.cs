@@ -27,7 +27,7 @@ namespace CbzCreatorGui
 
         public static void UpdateLayout()
         {
-            if (Current is App app && app.MainWindow != null) {
+            if (Current is App { MainWindow: not null } app) {
                 app.MainWindow.LayoutManager.ExecuteLayoutPass();
             }
         }
