@@ -52,7 +52,7 @@ public partial class MainPage : BasePage
             {
                 SearchTitle = ComicTitle.Text
             };
-            var res = await dlg.Show<Medium>((MainWindowBase)this.VisualRoot!);
+            var res = await dlg.Show<Medium>();
             if (res != null) {
                 ComicTitle.Text = res.Title?.English ?? res.Title?.Romaji;
                 Authors.Text = res.Staff?.Author?.Node?.Name?.Full;
@@ -94,7 +94,7 @@ public partial class MainPage : BasePage
                 OutputPath = OutputPath.Text,
                 Info = info
             };
-            await dlg.Show((MainWindowBase)this.VisualRoot!);
+            await dlg.Show();
         }
     }
 

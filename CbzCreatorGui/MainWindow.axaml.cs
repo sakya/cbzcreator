@@ -11,8 +11,7 @@ namespace CbzCreatorGui
         {
             InitializeComponent();
 
-            Title = $"CBZ creator - v{Assembly.GetExecutingAssembly().GetName().Version!.ToString()}";
-            WindowTitle = Title;
+            WindowTitle = $"CBZ creator - v{Assembly.GetExecutingAssembly().GetName().Version!.ToString()}";
             Container = ContainerGrid;
         }
 
