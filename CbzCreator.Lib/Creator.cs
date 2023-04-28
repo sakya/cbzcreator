@@ -79,6 +79,7 @@ public static class Creator
                 Compress(dir, output, token, logger);
             }
         }
+        logger?.Invoke(LogLevel.Info, "Done");
     }
 
     /// <summary>
