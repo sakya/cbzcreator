@@ -70,13 +70,14 @@ public static class Creator
             if (dir is "." or "..")
                 continue;
 
-            var idx = dir.LastIndexOf(Path.DirectorySeparatorChar);
-            if (idx >= 0) {
-                var name = SanitizeFilename(dir.Substring(idx + 1));
+            var name = SanitizeFilename(Path.GetFileName(dir));
+            if (!string.IsNullOrEmpty(name)) {
                 var output = Path.Combine(outputPath, $"{title} - {name}.cbz");
                 logger?.Invoke(LogLevel.Info, $"Creating {Path.GetFileName(output)} from {dir}");
 
                 Compress(dir, output, token, logger);
+            } else {
+                logger?.Invoke(LogLevel.Warning, $"Skipped {dir}");
             }
         }
         logger?.Invoke(LogLevel.Info, "Done");
@@ -91,6 +92,9 @@ public static class Creator
     /// <param name="logger">The logger function</param>
     private static void Compress(string inputPath, string outputFile, CancellationToken? token, Action<LogLevel, string>? logger = null)
     {
+        if (File.Exists(outputFile))
+            logger?.Invoke(LogLevel.Warning, $"Overwriting {outputFile}");
+
         using var stream = new FileStream(outputFile, FileMode.Create, FileAccess.Write);
         using var zip = new ZipArchive(stream, ZipArchiveMode.Create);
 

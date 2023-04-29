@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.SingleWindow;
@@ -39,10 +40,7 @@ public partial class MainPage : BasePage
             if (Equals(sender, InputButton)) {
                 InputPath.Text = folder;
                 if (string.IsNullOrEmpty(ComicTitle.Text)) {
-                    var idx = folder.LastIndexOf(System.IO.Path.DirectorySeparatorChar);
-                    if (idx >= 0) {
-                        ComicTitle.Text = folder.Substring(idx + 1);
-                    }
+                    ComicTitle.Text = System.IO.Path.GetFileName(folder);
                 }
             } else {
                 OutputPath.Text = folder;
