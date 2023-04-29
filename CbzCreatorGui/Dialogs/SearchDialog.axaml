@@ -78,6 +78,14 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
+            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Name="WaitSpinner"
+                        VerticalAlignment="Center" HorizontalAlignment="Center"
+                        Width="40" Height="40">
+                <i:Icon HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Width="40" Height="40" FontSize="32"
+                        Value="fas fa-circle-notch" />
+            </StackPanel>
+
             <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
                     Name="OkButton" MinHeight="50" IsEnabled="False"
                     Click="OnOkClick" Classes="Accent">

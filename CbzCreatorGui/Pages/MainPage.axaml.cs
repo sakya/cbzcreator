@@ -4,7 +4,6 @@ using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using Avalonia.SingleWindow;
 using Avalonia.SingleWindow.Abstracts;
 using CbzCreator.Lib.Models;
@@ -39,6 +38,12 @@ public partial class MainPage : BasePage
         if (!string.IsNullOrEmpty(folder)) {
             if (Equals(sender, InputButton)) {
                 InputPath.Text = folder;
+                if (string.IsNullOrEmpty(ComicTitle.Text)) {
+                    var idx = folder.LastIndexOf(System.IO.Path.DirectorySeparatorChar);
+                    if (idx >= 0) {
+                        ComicTitle.Text = folder.Substring(idx + 1);
+                    }
+                }
             } else {
                 OutputPath.Text = folder;
             }

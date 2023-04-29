@@ -35,12 +35,15 @@ public partial class SearchDialog : BaseDialog
 
     private async void OnSearchClick(object? sender, RoutedEventArgs e)
     {
+        List.Items = null;
         if (!string.IsNullOrEmpty(ComicTitle.Text?.Trim())) {
             SearchButton.IsEnabled = false;
+            WaitSpinner.IsVisible = true;
+            WaitSpinner.Classes.Add("spinner");
             await Search(ComicTitle.Text);
             SearchButton.IsEnabled = true;
-        } else {
-            List.Items = null;
+            WaitSpinner.IsVisible = false;
+            WaitSpinner.Classes.Remove("spinner");
         }
     }
 

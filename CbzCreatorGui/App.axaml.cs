@@ -8,7 +8,7 @@ namespace CbzCreatorGui
 {
     public class App : Application
     {
-        public Window? MainWindow { get; set; }
+        private Window? MainWindow { get; set; }
 
         public override void Initialize()
         {
