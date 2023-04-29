@@ -37,18 +37,16 @@ public partial class SearchDialog : BaseDialog
     {
         List.Items = null;
         if (!string.IsNullOrEmpty(ComicTitle.Text?.Trim())) {
-            SearchButton.IsEnabled = false;
-            WaitSpinner.IsVisible = true;
-            WaitSpinner.Classes.Add("spinner");
             await Search(ComicTitle.Text);
-            SearchButton.IsEnabled = true;
-            WaitSpinner.IsVisible = false;
-            WaitSpinner.Classes.Remove("spinner");
         }
     }
 
     private async Task<bool> Search(string title)
     {
+        SearchButton.IsEnabled = false;
+        WaitSpinner.IsVisible = true;
+        WaitSpinner.Classes.Add("spinner");
+
         using StringContent jsonContent = new(
             JsonConvert.SerializeObject(new
             {
@@ -67,6 +65,10 @@ public partial class SearchDialog : BaseDialog
         var searchResult = JsonConvert.DeserializeObject<Models.SearchResult>(jsonResponse);
 
         List.Items = searchResult?.Data?.Page?.Media;
+        SearchButton.IsEnabled = true;
+        WaitSpinner.IsVisible = false;
+        WaitSpinner.Classes.Remove("spinner");
+
         return true;
     }
 
