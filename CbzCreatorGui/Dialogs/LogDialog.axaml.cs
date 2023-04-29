@@ -51,6 +51,7 @@ public partial class LogDialog : BaseDialog
             _running = false;
             Dispatcher.UIThread.InvokeAsync(() =>
             {
+                Button.Classes.Remove("Cancel");
                 Button.Classes.Add("Accent");
                 ButtonText.Text = "Close";
             });

@@ -24,6 +24,13 @@
             <Setter Property="Background" Value="{DynamicResource HighlightColor}"/>
         </Style>
 
+        <Style Selector="Button.Cancel">
+            <Setter Property="Background" Value="{DynamicResource DangerColor}"/>
+        </Style>
+        <Style Selector="Button.Cancel:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource HighlightColor}"/>
+        </Style>
+
         <Style Selector="StackPanel.spinner">
             <Style.Animations>
                 <Animation Duration="0:0:1" IterationCount="INFINITE">
