@@ -15,7 +15,8 @@ public static class Creator
     /// </summary>
     private static readonly HashSet<string> Md5ToSkip = new()
     {
-        "a15f2b2e0ebd6bdda7c338135caa8398" // mangafox "more wonderful manga here"
+        "a15f2b2e0ebd6bdda7c338135caa8398", // mangafox "more wonderful manga here"
+        "283f0603ddd6f00638cbaae993b4177c", // mangascreener
     };
 
     public enum LogLevel
