@@ -17,6 +17,7 @@ public static class Creator
     {
         "a15f2b2e0ebd6bdda7c338135caa8398", // mangafox "more wonderful manga here"
         "283f0603ddd6f00638cbaae993b4177c", // mangascreener
+        "4a2ae7fbcc6bfe9c6a412caa19f6030b", // mangaproject.cbj.net
     };
 
     public enum LogLevel
