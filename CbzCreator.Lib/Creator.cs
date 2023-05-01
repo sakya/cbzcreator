@@ -54,8 +54,6 @@ public static class Creator
         if (info.CoverUrl != null) {
             logger?.Invoke(LogLevel.Info,$"Downloading cover from {info.CoverUrl}");
             DownloadCover(info.CoverUrl, Path.Join(outputPath, "cover.jpg"));
-            var imageBytes = HttpClient.GetByteArrayAsync(info.CoverUrl).Result;
-            File.WriteAllBytesAsync(Path.Combine(outputPath, "cover.jpg"), imageBytes);
         }
 
         // Build CBZs
