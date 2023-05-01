@@ -10,6 +10,8 @@
 
     <UserControl.Resources>
         <converters:TitleConverter x:Key="TitleConverter"/>
+        <converters:StatusToStringConverter x:Key="StatusToStringConverter"/>
+        <converters:StatusToColorConverter x:Key="StatusToColorConverter"/>
     </UserControl.Resources>
 
     <Panel>
@@ -71,7 +73,9 @@
                                     TextTrimming="CharacterEllipsis"
                                     FontWeight="ExtraLight"/>
 
-                                <TextBlock Grid.Row="3" Text="{Binding Status}" />
+                                <TextBlock Grid.Row="3"
+                                           Text="{Binding PublishingStatus, Converter={StaticResource StatusToStringConverter}}"
+                                           Foreground="{Binding PublishingStatus, Converter={StaticResource StatusToColorConverter}}"/>
                             </Grid>
                         </Grid>
                     </DataTemplate>

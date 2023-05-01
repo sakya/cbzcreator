@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using CbzCreator.Lib.Models;
 using Newtonsoft.Json;
 
 namespace CbzCreatorGui.Models;
@@ -35,6 +36,26 @@ public class Medium
 
     [JsonProperty("status")]
     public string? Status { get; set; }
+
+    [JsonIgnore]
+    public Info.Statuses PublishingStatus
+    {
+        get
+        {
+            switch (Status) {
+                case "CANCELLED":
+                    return Info.Statuses.Cancelled;
+                case "FINISHED":
+                    return Info.Statuses.PublishingFinished;
+                case "HIATUS":
+                    return Info.Statuses.OnHiatus;
+                case "RELEASING":
+                    return Info.Statuses.Ongoing;
+                default:
+                    return Info.Statuses.Unknown;
+            }
+        }
+    }
 
     [JsonProperty("description")]
     public string? Description { get; set; }
