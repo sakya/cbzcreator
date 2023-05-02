@@ -1,0 +1,52 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="CbzCreatorGui.Dialogs.UpdateDialog"
+             MinWidth="300"
+             MinHeight="200">
+
+    <Panel>
+        <ExperimentalAcrylicBorder IsHitTestVisible="False">
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial
+                    BackgroundSource="Digger"
+                    TintColor="Black"
+                    TintOpacity="1"
+                    MaterialOpacity="0.65" />
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
+
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock TextWrapping="Wrap">New version available</TextBlock>
+            <ScrollViewer Grid.Row="1" Margin="0,15,0,15" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                          MaxHeight="300">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Name="Version" FontWeight="Bold" />
+                    <TextBlock Name="Description" TextAlignment="Left" TextWrapping="Wrap" />
+                </StackPanel>
+            </ScrollViewer>
+
+            <Grid Grid.Row="2" Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" HorizontalAlignment="Stretch" Click="OnCancelClick" Margin="0,0,5,0">
+                    <TextBlock HorizontalAlignment="Center">Cancel</TextBlock>
+                </Button>
+                <Button Grid.Column="1" HorizontalAlignment="Stretch" Classes="Accent" Click="OnOkClick" Margin="5,0,0,0">
+                    <TextBlock HorizontalAlignment="Center">Ok</TextBlock>
+                </Button>
+            </Grid>
+        </Grid>
+    </Panel>
+</UserControl>
