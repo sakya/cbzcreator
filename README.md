@@ -8,9 +8,10 @@ CBZ creator writes also the file `details.json` for [Tachiyomi](https://tachiyom
 Using the GUI you can search for manga information and cover using [anilist.co](https://anilist.co/)
 
 ### Screenshots
-![image](https://user-images.githubusercontent.com/289552/234328058-1f716126-8116-40e1-9948-546f546d2e35.png)
+![image](https://user-images.githubusercontent.com/289552/235618354-0720f82d-1389-4b30-8261-5fda1a178045.png)
 
-![image](https://user-images.githubusercontent.com/289552/234327998-30a1dded-a3bb-4ebf-aeea-a6ce16a67898.png)
+
+![image](https://user-images.githubusercontent.com/289552/235618406-42547049-9f45-4591-a015-855beb4bc37c.png)
 
 ## Command line
 ```
