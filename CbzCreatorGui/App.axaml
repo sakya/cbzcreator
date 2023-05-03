@@ -21,14 +21,14 @@
             <Setter Property="Background" Value="{DynamicResource SystemAccentColor}"/>
         </Style>
         <Style Selector="Button.Accent:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="{DynamicResource HighlightColor}"/>
+            <Setter Property="Background" Value="#00569e"/>
         </Style>
 
         <Style Selector="Button.Cancel">
             <Setter Property="Background" Value="{DynamicResource DangerColor}"/>
         </Style>
         <Style Selector="Button.Cancel:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="{DynamicResource HighlightColor}"/>
+            <Setter Property="Background" Value="#9f3b38"/>
         </Style>
 
         <Style Selector="StackPanel.spinner">
