@@ -36,7 +36,8 @@
 
         <TextBox Name="ComicTitle" Grid.Row="2" Grid.Column="0" Watermark="Title" Margin="0,30,0,0"
                  KeyDown="OnComicTitleKeyDown"/>
-        <Button Grid.Row="2" Grid.Column="1" Margin="0,30,0,0" MinHeight="32" Click="OnSearchClick">
+        <Button Grid.Row="2" Grid.Column="1" Margin="0,30,0,0" MinHeight="32" Click="OnSearchClick"
+                ToolTip.Tip="Search title info">
             <i:Icon Value="fa-solid fa-magnifying-glass" />
         </Button>
 
