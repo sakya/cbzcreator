@@ -4,6 +4,30 @@ A utility to create CBZ files from a bunch of folders containing images (like th
 
 CBZ creator writes also the file `details.json` for [Tachiyomi](https://tachiyomi.org/)
 
+The input folder is the one containing all the volums/capters subfolder and shoould have a structure like this:
+```
+/input/Manga title
+ |
+ +- Vol 1
+ |    001.jpg
+ |    002.jpg
+ |    ...
+ +- Vol 2
+ |    001.jpg
+ |    002.jpg
+ |    ...
+```
+
+In the output folder all the cbz will be created and will have a structure like this:
+```
+/output/Manga title
+ | cover.jpg
+ | details.json
+ | Manga title - Vol 1.cbz
+ | Manga title - Vol 2.cbz
+ | ...
+```
+
 ## Gui
 Using the GUI you can search for manga information and cover using [anilist.co](https://anilist.co/)
 
