@@ -25,6 +25,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <ScrollViewer Name="Log">
@@ -45,7 +46,9 @@
                 </ListBox>
             </ScrollViewer>
 
-            <Button Grid.Row="1" HorizontalAlignment="Stretch" MinHeight="50" Margin="0,10,0,0"
+            <ProgressBar Grid.Row="1" Name="ProgressBar" Minimum="0" Maximum="100" Value="0" ShowProgressText="True"
+                         MinHeight="32"/>
+            <Button Grid.Row="2" HorizontalAlignment="Stretch" MinHeight="50" Margin="0,10,0,0"
                     Name="Button" Classes="Cancel" Click="OnButtonClick">
                 <TextBlock Name="ButtonText" HorizontalAlignment="Center" VerticalAlignment="Center">Cancel</TextBlock>
             </Button>

@@ -44,7 +44,7 @@ public partial class LogDialog : BaseDialog
         {
             _running = true;
             try {
-                Creator.Create(Info, InputPath, OutputPath, _tokenSource.Token, LogMessage);
+                Creator.Create(Info, InputPath, OutputPath, _tokenSource.Token, LogMessage, Progress);
             } catch (Exception ex) {
                 LogMessage(Creator.LogLevel.Error, ex.Message);
             }
@@ -85,6 +85,11 @@ public partial class LogDialog : BaseDialog
             App.UpdateLayout();
             Log.ScrollToEnd();
         });
+    }
+
+    private void Progress(double value)
+    {
+        Dispatcher.UIThread.InvokeAsync(() => { ProgressBar.Value = value; });
     }
 
     private void OnButtonClick(object? sender, RoutedEventArgs e)

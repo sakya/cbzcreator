@@ -87,7 +87,10 @@ public static class Creator
     /// <param name="outputPath">The output path</param>
     /// <param name="token">The <see cref="CancellationToken"/></param>
     /// <param name="logger">The logger function</param>
-    public static void Create(Info info, string inputPath, string outputPath, CancellationToken? token = null, Action<LogLevel, string>? logger = null)
+    /// <param name="progress">The progress function</param>
+    public static void Create(Info info, string inputPath, string outputPath, CancellationToken? token = null,
+        Action<LogLevel, string>? logger = null,
+        Action<double>? progress = null)
     {
         if (!Directory.Exists(inputPath))
             throw new Exception($"Cannot access path {inputPath}");
@@ -112,6 +115,7 @@ public static class Creator
         var title = SanitizeFilename(info.Title!);
         var dirs = Directory.GetDirectories(inputPath);
         Array.Sort(dirs, new NaturalComparer());
+        var idx = 0;
         foreach (var dir in dirs) {
             if (token?.IsCancellationRequested == true) {
                 logger?.Invoke(LogLevel.Warning, "User aborted");
@@ -130,6 +134,8 @@ public static class Creator
             } else {
                 logger?.Invoke(LogLevel.Warning, $"Skipped {dir}");
             }
+
+            progress?.Invoke((double)++idx / dirs.Length * 100.0);
         }
         logger?.Invoke(LogLevel.Info, "Done");
     }
