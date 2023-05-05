@@ -1,5 +1,6 @@
 using System.IO.Compression;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using CbzCreator.Lib.Models;
 using Newtonsoft.Json;
 using SixLabors.ImageSharp.Formats.Jpeg;
@@ -9,6 +10,56 @@ namespace CbzCreator.Lib;
 public static class Creator
 {
     private static readonly HttpClient HttpClient = new();
+
+    private sealed class NaturalComparer : IComparer<string> {
+
+        private static int CompareChunks(string x, string y) {
+            if (x[0] >= '0' && x[0] <= '9' && y[0] >= '0' && y[0] <= '9') {
+                var tx = x.TrimStart('0');
+                var ty = y.TrimStart('0');
+
+                var result = tx.Length.CompareTo(ty.Length);
+
+                if (result != 0)
+                    return result;
+
+                result = string.CompareOrdinal(tx, ty);
+
+                if (result != 0)
+                    return result;
+            }
+
+            return string.CompareOrdinal(x, y);
+        }
+
+        public int Compare(string? x, string? y) {
+            if (ReferenceEquals(x, y))
+                return 0;
+            if (x is null)
+                return -1;
+            if (y is null)
+                return +1;
+
+            var itemsX = Regex
+                .Split(x, "([0-9]+)")
+                .Where(item => !string.IsNullOrEmpty(item))
+                .ToList();
+
+            var itemsY = Regex
+                .Split(y, "([0-9]+)")
+                .Where(item => !string.IsNullOrEmpty(item))
+                .ToList();
+
+            for (var i = 0; i < Math.Min(itemsX.Count, itemsY.Count); ++i) {
+                var result = CompareChunks(itemsX[i], itemsY[i]);
+
+                if (result != 0)
+                    return result;
+            }
+
+            return itemsX.Count.CompareTo(itemsY.Count);
+        }
+    }
 
     /// <summary>
     /// MD5 of images to skip (ad from source sites)
@@ -60,7 +111,7 @@ public static class Creator
         // Build CBZs
         var title = SanitizeFilename(info.Title!);
         var dirs = Directory.GetDirectories(inputPath);
-        Array.Sort(dirs);
+        Array.Sort(dirs, new NaturalComparer());
         foreach (var dir in dirs) {
             if (token?.IsCancellationRequested == true) {
                 logger?.Invoke(LogLevel.Warning, "User aborted");
@@ -99,7 +150,7 @@ public static class Creator
         using var zip = new ZipArchive(stream, ZipArchiveMode.Create);
 
         var files = Directory.GetFiles(inputPath);
-        Array.Sort(files);
+        Array.Sort(files, new NaturalComparer());
         foreach (var file in files) {
             if (token?.IsCancellationRequested == true)
                 return;
