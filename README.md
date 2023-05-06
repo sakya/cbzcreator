@@ -4,7 +4,7 @@ A utility to create CBZ files from a bunch of folders containing images (like th
 
 CBZ creator writes also the file `details.json` for [Tachiyomi](https://tachiyomi.org/)
 
-The input folder is the one containing all the volums/capters subfolder and shoould have a structure like this:
+The input folder is the one containing all the volums/chapters subfolders and should have a structure like this:
 ```
 /input/Manga title
  |
