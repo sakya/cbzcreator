@@ -9,7 +9,7 @@ namespace CbzCreatorGui.Dialogs;
 
 public partial class UpdateDialog : BaseDialog
 {
-    private Release? _release;
+    private readonly Release? _release;
     public UpdateDialog()
     {
         InitializeComponent();

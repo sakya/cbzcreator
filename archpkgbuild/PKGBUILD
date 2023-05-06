@@ -1,0 +1,45 @@
+pkgname="cbzcreator"
+pkgver="1.4.0"
+pkgrel="1"
+pkgdesc="CBZ creator is a utility to create CBZ from folders containing images"
+arch=("x86_64")
+options=("staticlibs")
+depends=("dotnet-sdk")
+optdepends=()
+makedepends=()
+conflicts=()
+replaces=()
+backup=()
+license=("GPL")
+url="https://github.com/sakya/cbzcreator.git"
+
+prepare() {
+	rm -rf "$pkgdir"
+	rm -rf "${srcdir}"
+	mkdir -p "${srcdir}/${pkgname}-${pkgver}"
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	git clone https://github.com/sakya/cbzcreator.git
+}
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}/cbzcreator"	
+	dotnet publish CbzCreator.sln -c Release --runtime linux-x64 --self-contained -p:PublishReadyToRun=true --output ./dist/linux-x64
+	cp icon.png dist/linux-x64/cbzcreator.png
+}
+
+package() {
+	mkdir -p "$pkgdir/opt/cbzcreator"
+	mkdir -p "$pkgdir/usr/share/applications"
+	cp -r "${srcdir}/${pkgname}-${pkgver}/cbzcreator/dist/linux-x64/"* "$pkgdir/opt/cbzcreator/"
+	
+	echo "[Desktop Entry]" 					>  "$pkgdir/usr/share/applications/cbzcreator.desktop"
+	echo "Name=CBZ creator" 				>> "$pkgdir/usr/share/applications/cbzcreator.desktop"
+	echo "Version=${pkgver}" 				>> "$pkgdir/usr/share/applications/cbzcreator.desktop"	
+	echo "Type=Application" 				>> "$pkgdir/usr/share/applications/cbzcreator.desktop"			
+	echo "Exec=/opt/cbzcreator/CbzCreatorGui" 		>> "$pkgdir/usr/share/applications/cbzcreator.desktop"			
+	echo "Path=/opt/cbzcreator/" 				>> "$pkgdir/usr/share/applications/cbzcreator.desktop"		
+	echo "Icon=/opt/cbzcreator/cbzcreator.png" 		>> "$pkgdir/usr/share/applications/cbzcreator.desktop"		
+	echo "Categories=Utility;" 				>> "$pkgdir/usr/share/applications/cbzcreator.desktop"		
+}
+
+
