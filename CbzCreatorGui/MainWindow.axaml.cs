@@ -1,7 +1,5 @@
 using System;
 using System.Reflection;
-using Avalonia.Controls;
-using Avalonia.Media;
 using Avalonia.SingleWindow;
 using Avalonia.Threading;
 using CbzCreatorGui.Pages;
@@ -32,7 +30,7 @@ namespace CbzCreatorGui
             DispatcherTimer.RunOnce(async () =>
             {
                 var updater = new Utils.AutoUpdater();
-                await updater.CheckForUpdate(MainWindow.Instance);
+                await updater.CheckForUpdate(this);
             }, TimeSpan.FromSeconds(2), DispatcherPriority.Background);
         }
 
