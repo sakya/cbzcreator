@@ -87,10 +87,12 @@ public static class Creator
     /// <param name="outputPath">The output path</param>
     /// <param name="token">The <see cref="CancellationToken"/></param>
     /// <param name="logger">The logger function</param>
-    /// <param name="progress">The progress function</param>
+    /// <param name="totalProgress">The progress function</param>
+    /// <param name="cbzProgress">The progress function for the single CBZ</param>
     public static void Create(Info info, string inputPath, string outputPath, CancellationToken? token = null,
         Action<LogLevel, string>? logger = null,
-        Action<double>? progress = null)
+        Action<double>? totalProgress = null,
+        Action<double>? cbzProgress = null)
     {
         if (!Directory.Exists(inputPath))
             throw new Exception($"Cannot access path {inputPath}");
@@ -130,12 +132,12 @@ public static class Creator
                 var output = Path.Combine(outputPath, $"{title} - {name}.cbz");
                 logger?.Invoke(LogLevel.Info, $"Creating {Path.GetFileName(output)} from {dir}");
 
-                Compress(dir, output, token, logger);
+                Compress(dir, output, token, logger, cbzProgress);
             } else {
                 logger?.Invoke(LogLevel.Warning, $"Skipped {dir}");
             }
 
-            progress?.Invoke((double)++idx / dirs.Length * 100.0);
+            totalProgress?.Invoke((double)++idx / dirs.Length * 100.0);
         }
         logger?.Invoke(LogLevel.Info, "Done");
     }
@@ -147,7 +149,10 @@ public static class Creator
     /// <param name="outputFile">The output file path</param>
     /// <param name="token">The <see cref="CancellationToken"/></param>
     /// <param name="logger">The logger function</param>
-    private static void Compress(string inputPath, string outputFile, CancellationToken? token, Action<LogLevel, string>? logger = null)
+    /// <param name="cbzProgress">The progress function for the single CBZ</param>
+    private static void Compress(string inputPath, string outputFile, CancellationToken? token,
+        Action<LogLevel, string>? logger = null,
+        Action<double>? cbzProgress = null)
     {
         if (File.Exists(outputFile))
             logger?.Invoke(LogLevel.Warning, $"Overwriting {outputFile}");
@@ -157,6 +162,7 @@ public static class Creator
 
         var files = Directory.GetFiles(inputPath);
         Array.Sort(files, new NaturalComparer());
+        var idx = 0;
         foreach (var file in files) {
             if (token?.IsCancellationRequested == true)
                 return;
@@ -176,6 +182,7 @@ public static class Creator
             while ((read = inputStream.Read(buffer, 0, buffer.Length)) > 0) {
                 writer.Write(buffer, 0, read);
             }
+            cbzProgress?.Invoke((double)++idx / files.Length * 100.0);
         }
     }
 

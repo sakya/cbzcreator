@@ -44,7 +44,7 @@ public partial class LogDialog : BaseDialog
         {
             _running = true;
             try {
-                Creator.Create(Info, InputPath, OutputPath, _tokenSource.Token, LogMessage, Progress);
+                Creator.Create(Info, InputPath, OutputPath, _tokenSource.Token, LogMessage, TotalProgress, CbzProgress);
             } catch (Exception ex) {
                 LogMessage(Creator.LogLevel.Error, ex.Message);
             }
@@ -87,9 +87,14 @@ public partial class LogDialog : BaseDialog
         });
     }
 
-    private void Progress(double value)
+    private void CbzProgress(double value)
     {
         Dispatcher.UIThread.InvokeAsync(() => { ProgressBar.Value = value; });
+    }
+
+    private void TotalProgress(double value)
+    {
+        Dispatcher.UIThread.InvokeAsync(() => { TotalProgressBar.Value = value; });
     }
 
     private void OnButtonClick(object? sender, RoutedEventArgs e)
