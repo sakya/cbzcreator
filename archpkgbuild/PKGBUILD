@@ -22,7 +22,7 @@ prepare() {
 }
 
 build() {
-	cd "${srcdir}/${pkgname}-${pkgver}/cbzcreator"	
+	cd "${srcdir}/${pkgname}-${pkgver}/cbzcreator"
 	dotnet publish CbzCreator.sln -c Release --runtime linux-x64 --self-contained -p:PublishReadyToRun=true --output ./dist/linux-x64
 	cp icon.png dist/linux-x64/cbzcreator.png
 }
@@ -31,15 +31,15 @@ package() {
 	mkdir -p "$pkgdir/opt/cbzcreator"
 	mkdir -p "$pkgdir/usr/share/applications"
 	cp -r "${srcdir}/${pkgname}-${pkgver}/cbzcreator/dist/linux-x64/"* "$pkgdir/opt/cbzcreator/"
-	
-	echo "[Desktop Entry]" 					>  "$pkgdir/usr/share/applications/cbzcreator.desktop"
-	echo "Name=CBZ creator" 				>> "$pkgdir/usr/share/applications/cbzcreator.desktop"
-	echo "Version=${pkgver}" 				>> "$pkgdir/usr/share/applications/cbzcreator.desktop"	
-	echo "Type=Application" 				>> "$pkgdir/usr/share/applications/cbzcreator.desktop"			
-	echo "Exec=/opt/cbzcreator/CbzCreatorGui" 		>> "$pkgdir/usr/share/applications/cbzcreator.desktop"			
-	echo "Path=/opt/cbzcreator/" 				>> "$pkgdir/usr/share/applications/cbzcreator.desktop"		
-	echo "Icon=/opt/cbzcreator/cbzcreator.png" 		>> "$pkgdir/usr/share/applications/cbzcreator.desktop"		
-	echo "Categories=Utility;" 				>> "$pkgdir/usr/share/applications/cbzcreator.desktop"		
+
+	echo "[Desktop Entry]" 					        >  "$pkgdir/usr/share/applications/cbzcreator.desktop"
+	echo "Name=CBZ creator" 				        >> "$pkgdir/usr/share/applications/cbzcreator.desktop"
+	echo "Version=${pkgver}" 				        >> "$pkgdir/usr/share/applications/cbzcreator.desktop"
+	echo "Type=Application" 				        >> "$pkgdir/usr/share/applications/cbzcreator.desktop"
+	echo "Exec=/opt/cbzcreator/CbzCreatorGui" 		>> "$pkgdir/usr/share/applications/cbzcreator.desktop"
+	echo "Path=/opt/cbzcreator/" 				    >> "$pkgdir/usr/share/applications/cbzcreator.desktop"
+	echo "Icon=/opt/cbzcreator/cbzcreator.png" 		>> "$pkgdir/usr/share/applications/cbzcreator.desktop"
+	echo "Categories=Utility;" 				        >> "$pkgdir/usr/share/applications/cbzcreator.desktop"
 }
 
 

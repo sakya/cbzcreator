@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
@@ -10,6 +11,7 @@ using Avalonia.SingleWindow.Abstracts;
 using CbzCreator.Lib.Models;
 using CbzCreatorGui.Dialogs;
 using CbzCreatorGui.Models;
+using HarfBuzzSharp;
 
 namespace CbzCreatorGui.Pages;
 
@@ -41,6 +43,16 @@ public partial class MainPage : BasePage
                 InputPath.Text = folder;
                 if (string.IsNullOrEmpty(ComicTitle.Text)) {
                     ComicTitle.Text = System.IO.Path.GetFileName(folder);
+                }
+
+                // Check subfolders:
+                if (Directory.Exists(folder)) {
+                    if (Directory.GetDirectories(folder).Length == 0) {
+                        var msg = new MessageDialog();
+                        msg.Title = "Warning";
+                        msg.Message = $"No folder found in {folder}\nNo CBZ will be created.";
+                        await msg.Show();
+                    }
                 }
             } else {
                 OutputPath.Text = folder;
