@@ -110,7 +110,11 @@ public static class Creator
         // Download cover
         if (info.CoverUrl != null) {
             logger?.Invoke(LogLevel.Info,$"Downloading cover from {info.CoverUrl}");
-            DownloadCover(info.CoverUrl, Path.Join(outputPath, "cover.jpg"));
+            try {
+                DownloadCover(info.CoverUrl, Path.Join(outputPath, "cover.jpg"));
+            } catch (Exception ex) {
+                logger?.Invoke(LogLevel.Warning, $"Failed to save cover: {ex.Message}");
+            }
         }
 
         // Build CBZs
