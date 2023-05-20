@@ -100,8 +100,11 @@ public static class Creator
             Directory.CreateDirectory(outputPath);
 
         // Write info file
-        logger?.Invoke(LogLevel.Info, $"Writing {Path.Combine(outputPath, "details.json")}");
-        using (var jsonStream = new FileStream(Path.Combine(outputPath, "details.json"), FileMode.Create, FileAccess.Write)) {
+        var detailsFile = Path.Combine(outputPath, "details.json");
+        logger?.Invoke(LogLevel.Info, $"Writing {detailsFile}");
+        if (File.Exists(detailsFile))
+            logger?.Invoke(LogLevel.Warning, $"Overwriting {detailsFile}");
+        using (var jsonStream = new FileStream(detailsFile, FileMode.Create, FileAccess.Write)) {
             using (var sr = new StreamWriter(jsonStream)) {
                 sr.Write(JsonConvert.SerializeObject(info, Formatting.Indented));
             }
@@ -111,7 +114,7 @@ public static class Creator
         if (info.CoverUrl != null) {
             logger?.Invoke(LogLevel.Info,$"Downloading cover from {info.CoverUrl}");
             try {
-                DownloadCover(info.CoverUrl, Path.Join(outputPath, "cover.jpg"));
+                DownloadCover(info.CoverUrl, Path.Join(outputPath, "cover.jpg"), logger);
             } catch (Exception ex) {
                 logger?.Invoke(LogLevel.Warning, $"Failed to save cover: {ex.Message}");
             }
@@ -227,8 +230,11 @@ public static class Creator
     /// </summary>
     /// <param name="url">The cover url</param>
     /// <param name="filePath">The destination path</param>
-    private static void DownloadCover(Uri url, string filePath)
+    /// <param name="logger">The logger function</param>
+    private static void DownloadCover(Uri url, string filePath, Action<LogLevel, string>? logger = null)
     {
+        if (File.Exists(filePath))
+            logger?.Invoke(LogLevel.Warning, $"Overwriting {filePath}");
         var imageBytes = HttpClient.GetByteArrayAsync(url).Result;
 
         using var ms = new MemoryStream(imageBytes);
