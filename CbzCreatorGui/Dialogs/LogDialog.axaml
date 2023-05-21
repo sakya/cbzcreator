@@ -29,7 +29,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <ScrollViewer Name="Log">
+            <ScrollViewer Name="Log" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <ListBox Name="LogList" FontFamily="Consolas"
                          VirtualizationMode="None">
                     <ListBox.Styles>
