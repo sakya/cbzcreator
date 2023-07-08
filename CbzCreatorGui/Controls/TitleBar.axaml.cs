@@ -14,6 +14,7 @@ namespace CbzCreatorGui.Controls
         {
             InitializeComponent();
 
+            IsVisible = Environment.OSVersion.Platform == PlatformID.Win32NT;
             CanMinimize = true;
             CanMaximize = true;
         }
@@ -30,13 +31,6 @@ namespace CbzCreatorGui.Controls
 
         public bool CanMinimize { get; set; }
         public bool CanMaximize { get; set; }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-
-            this.IsVisible = Environment.OSVersion.Platform == PlatformID.Win32NT;
-        }
 
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
