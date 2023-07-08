@@ -35,7 +35,7 @@ public partial class SearchDialog : BaseDialog
 
     private async void OnSearchClick(object? sender, RoutedEventArgs e)
     {
-        List.Items = null;
+        List.ItemsSource = null;
         if (!string.IsNullOrEmpty(ComicTitle.Text?.Trim())) {
             await Search(ComicTitle.Text);
         }
@@ -64,7 +64,7 @@ public partial class SearchDialog : BaseDialog
         var jsonResponse = await response.Content.ReadAsStringAsync();
         var searchResult = JsonConvert.DeserializeObject<Models.SearchResult>(jsonResponse);
 
-        List.Items = searchResult?.Data?.Page?.Media;
+        List.ItemsSource = searchResult?.Data?.Page?.Media;
         SearchButton.IsEnabled = true;
         WaitSpinner.IsVisible = false;
         WaitSpinner.Classes.Remove("spinner");

@@ -30,8 +30,7 @@
             </Grid.RowDefinitions>
 
             <ScrollViewer Name="Log" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                <ListBox Name="LogList" FontFamily="Consolas"
-                         VirtualizationMode="None">
+                <ListBox Name="LogList" FontFamily="Consolas">
                     <ListBox.Styles>
                         <Style Selector="ListBoxItem">
                             <Setter Property="Padding" Value="0"/>

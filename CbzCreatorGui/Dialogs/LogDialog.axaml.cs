@@ -26,7 +26,7 @@ public partial class LogDialog : BaseDialog
         VerticalAlignment = VerticalAlignment.Stretch;
         HorizontalAlignment = HorizontalAlignment.Stretch;
 
-        LogList.Items = _log;
+        LogList.ItemsSource = _log;
         _tokenSource = new CancellationTokenSource();
         Closing += OnClosing;
     }

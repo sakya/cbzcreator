@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Platform.Storage;
 using Avalonia.SingleWindow;
 using Avalonia.SingleWindow.Abstracts;
 using CbzCreator.Lib.Models;
@@ -31,14 +32,17 @@ public partial class MainPage : BasePage
             new("Cancelled", Info.Statuses.Cancelled),
             new("On hiatus", Info.Statuses.OnHiatus),
         };
-        Status.Items = statuses;
+        Status.ItemsSource = statuses;
     }
 
     private async void OnOpenFolderClick(object? sender, RoutedEventArgs e)
     {
-        var dlg = new OpenFolderDialog();
-        var folder = await dlg.ShowAsync((MainWindowBase)this.VisualRoot!);
-        if (!string.IsNullOrEmpty(folder)) {
+        var folders = await MainWindow.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions()
+        {
+            AllowMultiple = false
+        });
+        if (folders.Count > 0) {
+            var folder = folders.First().Path.ToString();
             if (Equals(sender, InputButton)) {
                 InputPath.Text = folder;
                 if (string.IsNullOrEmpty(ComicTitle.Text)) {
