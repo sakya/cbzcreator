@@ -23,11 +23,8 @@ namespace CbzCreatorGui.Controls
             set
             {
                 _canGoBack = value;
-                var btn = this.FindControl<Button>("BackBtn");
-                btn.IsVisible = _canGoBack;
-
-                var icon = this.FindControl<Image>("Icon");
-                icon.IsVisible = !_canGoBack;
+                BackBtn.IsVisible = _canGoBack;
+                Icon.IsVisible = !_canGoBack;
             }
         }
 
@@ -57,49 +54,43 @@ namespace CbzCreatorGui.Controls
                 var wState = pw.GetObservable(Window.WindowStateProperty);
                 wState.Subscribe(s =>
                 {
-                    var btn = this.FindControl<Button>("MaximizeBtn");
                     if (s == WindowState.Maximized) {
                         pw.Padding = new Thickness(5);
-                        btn.Content = new Projektanker.Icons.Avalonia.Icon() { Value = "fas fa-window-restore" };
+                        MaximizeBtn.Content = new Projektanker.Icons.Avalonia.Icon() { Value = "fas fa-window-restore" };
                     } else {
                         pw.Padding = new Thickness(0);
-                        btn.Content = new Projektanker.Icons.Avalonia.Icon() { Value = "fas fa-window-maximize" };
+                        MaximizeBtn.Content = new Projektanker.Icons.Avalonia.Icon() { Value = "fas fa-window-maximize" };
                     }
                 });
             }
 
-            var btn = this.FindControl<Button>("MinimizeBtn");
-            btn.Click += (e, a) =>
+            MinimizeBtn.Click += (e, a) =>
             {
                 ((Window)this.VisualRoot!).WindowState = WindowState.Minimized;
             };
-            btn.IsVisible = CanMinimize;
+            MinimizeBtn.IsVisible = CanMinimize;
 
-            btn = this.FindControl<Button>("MaximizeBtn");
-            btn.Click += (s, a) =>
+            MaximizeBtn.Click += (s, a) =>
             {
                 if (this.VisualRoot is Window vr)
                     vr.WindowState = vr.WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
             };
-            btn.IsVisible = CanMinimize;
+            MaximizeBtn.IsVisible = CanMinimize;
 
-            btn = this.FindControl<Button>("CloseBtn");
-            btn.Click += (s, a) =>
+            CloseBtn.Click += (s, a) =>
             {
                 ((Window)this.VisualRoot!).Close();
             };
 
-            btn = this.FindControl<Button>("BackBtn");
-            btn.Click += async (s, a) =>
+            BackBtn.Click += async (s, a) =>
             {
                 await (pw as MainWindow)!.NavigateBack();
             };
         }
 
-        private void SetTitle(string title)
+        private void SetTitle(string? title)
         {
-            var txt = this.FindControl<TextBlock>("Title");
-            txt.Text = title;
+            Title.Text = title;
         }
     }
 }
