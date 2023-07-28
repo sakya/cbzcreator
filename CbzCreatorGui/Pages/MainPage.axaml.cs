@@ -42,7 +42,7 @@ public partial class MainPage : BasePage
             AllowMultiple = false
         });
         if (folders.Count > 0) {
-            var folder = folders.First().Path.ToString();
+            var folder = folders.First().Path.AbsolutePath;
             if (Equals(sender, InputButton)) {
                 InputPath.Text = folder;
                 if (string.IsNullOrEmpty(ComicTitle.Text)) {
