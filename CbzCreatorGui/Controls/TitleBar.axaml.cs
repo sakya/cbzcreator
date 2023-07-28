@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Markup.Xaml;
 using System;
+using Avalonia.Reactive;
 
 namespace CbzCreatorGui.Controls
 {
@@ -40,13 +41,10 @@ namespace CbzCreatorGui.Controls
             if (pw != null) {
                 SetTitle(pw.Title);
                 var title = pw.GetObservable(Window.TitleProperty);
-                title.Subscribe(value =>
-                {
-                    SetTitle(value);
-                });
+                title.Subscribe(new AnonymousObserver<string?>(SetTitle));
 
                 var wState = pw.GetObservable(Window.WindowStateProperty);
-                wState.Subscribe(s =>
+                wState.Subscribe(new AnonymousObserver<WindowState>(s =>
                 {
                     if (s == WindowState.Maximized) {
                         pw.Padding = new Thickness(5);
@@ -55,7 +53,7 @@ namespace CbzCreatorGui.Controls
                         pw.Padding = new Thickness(0);
                         MaximizeBtn.Content = new Projektanker.Icons.Avalonia.Icon() { Value = "fas fa-window-maximize" };
                     }
-                });
+                }));
             }
 
             MinimizeBtn.Click += (e, a) =>
