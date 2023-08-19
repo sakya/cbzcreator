@@ -2,17 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Avalonia.Controls;
-using Avalonia.Controls.Shapes;
+using System.Web;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
-using Avalonia.SingleWindow;
 using Avalonia.SingleWindow.Abstracts;
 using CbzCreator.Lib.Models;
 using CbzCreatorGui.Dialogs;
 using CbzCreatorGui.Models;
-using HarfBuzzSharp;
 
 namespace CbzCreatorGui.Pages;
 
@@ -42,7 +39,7 @@ public partial class MainPage : BasePage
             AllowMultiple = false
         });
         if (folders.Count > 0) {
-            var folder = folders.First().Path.AbsolutePath;
+            var folder = HttpUtility.UrlDecode(folders.First().Path.AbsolutePath);
             if (Equals(sender, InputButton)) {
                 InputPath.Text = folder;
                 if (string.IsNullOrEmpty(ComicTitle.Text)) {
