@@ -160,11 +160,11 @@ public partial class MainPage : BasePage
     {
         if (text != null) {
             text = text.Replace("\r", string.Empty).Replace("\n", string.Empty);
-            text = text.Replace("<br>", "\n");
-            text = text.Replace("<b>", string.Empty);
-            text = text.Replace("</b>", string.Empty);
-            text = text.Replace("<i>", string.Empty);
-            text = text.Replace("</i>", string.Empty);
+            text = text.Replace("<br>", "\n", StringComparison.InvariantCultureIgnoreCase);
+            text = text.Replace("<b>", string.Empty, StringComparison.InvariantCultureIgnoreCase);
+            text = text.Replace("</b>", string.Empty, StringComparison.InvariantCultureIgnoreCase);
+            text = text.Replace("<i>", string.Empty, StringComparison.InvariantCultureIgnoreCase);
+            text = text.Replace("</i>", string.Empty, StringComparison.InvariantCultureIgnoreCase);
         }
 
         return text;
