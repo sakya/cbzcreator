@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
@@ -11,6 +12,14 @@ namespace CbzCreator.Lib;
 public static class Creator
 {
     private static readonly HttpClient HttpClient = new();
+
+    private static readonly HashSet<string> FileExtensions = new()
+    {
+        ".jpg", ".JPG", ".jpeg", ".JPEG",
+        ".png", ".PNG",
+        ".bmp", ".BMP",
+        ".gif"
+    };
 
     private sealed class NaturalComparer : IComparer<string> {
 
@@ -168,12 +177,34 @@ public static class Creator
         using var stream = new FileStream(outputFile, FileMode.Create, FileAccess.Write);
         using var zip = new ZipArchive(stream, ZipArchiveMode.Create);
 
-        var files = Directory.GetFiles(inputPath);
+        var totalFiles = CountFiles(inputPath);
+        CompressDirectory(zip, inputPath, new DirectoryInfo(inputPath).FullName, totalFiles, 0, token, logger, cbzProgress);
+    }
+
+    private static int CountFiles(string path)
+    {
+        return Directory.GetFiles(path).Length +
+               Directory.GetDirectories(path).Sum(dir => Directory.GetFiles(dir).Count(f => FileExtensions.Contains(Path.GetExtension(f))));
+    }
+
+    private static int CompressDirectory(
+        ZipArchive zip,
+        string inputPath,
+        string rootPath,
+        int totalFiles,
+        int progressFiles,
+        CancellationToken? token,
+        Action<LogLevel, string>? logger = null,
+        Action<double>? cbzProgress = null)
+    {
+        var isRoot = inputPath == rootPath;
+        var files = Directory.GetFiles(inputPath)
+            .Where(f => FileExtensions.Contains(Path.GetExtension(f)))
+            .ToArray();
         Array.Sort(files, new NaturalComparer());
-        var idx = 0;
         foreach (var file in files) {
             if (token?.IsCancellationRequested == true)
-                return;
+                return progressFiles;
 
             logger?.Invoke(LogLevel.Debug, $"Processing {file}");
             var md5 = CalculateMd5(file);
@@ -182,7 +213,10 @@ public static class Creator
                 continue;
             }
 
-            var entry = zip.CreateEntry(Path.GetFileName(file), CompressionLevel.SmallestSize);
+            var entryName = isRoot ?
+                SanitizeFilename(Path.GetFileName(file)) :
+                Path.Join(SanitizeFilename(Path.GetDirectoryName(file)!.Remove(0, rootPath.Length + 1)), SanitizeFilename(Path.GetFileName(file)));
+            var entry = zip.CreateEntry(entryName, CompressionLevel.SmallestSize);
             using var writer = entry.Open();
             using var inputStream = new FileStream(file, FileMode.Open, FileAccess.Read);
             var buffer = new byte[32768];
@@ -190,8 +224,16 @@ public static class Creator
             while ((read = inputStream.Read(buffer, 0, buffer.Length)) > 0) {
                 writer.Write(buffer, 0, read);
             }
-            cbzProgress?.Invoke((double)++idx / files.Length * 100.0);
+            cbzProgress?.Invoke((double)++progressFiles / totalFiles * 100.0);
         }
+
+        var dirs = Directory.GetDirectories(inputPath);
+        Array.Sort(dirs, new NaturalComparer());
+        foreach (var dir in dirs) {
+            progressFiles = CompressDirectory(zip, dir, rootPath, totalFiles, progressFiles, token, logger, cbzProgress);
+        }
+
+        return progressFiles;
     }
 
     /// <summary>
