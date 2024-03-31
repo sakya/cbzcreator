@@ -1,5 +1,5 @@
 pkgname="cbzcreator"
-pkgver="1.6.2.0"
+pkgver="1.7.0.0"
 pkgrel="1"
 pkgdesc="CBZ creator is a utility to create CBZ from folders containing images"
 arch=("x86_64")
