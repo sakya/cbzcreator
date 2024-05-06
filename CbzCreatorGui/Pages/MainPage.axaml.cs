@@ -43,7 +43,7 @@ public partial class MainPage : BasePage
             if (Equals(sender, InputButton)) {
                 InputPath.Text = folder;
                 if (string.IsNullOrEmpty(ComicTitle.Text)) {
-                    ComicTitle.Text = System.IO.Path.GetFileName(folder);
+                    ComicTitle.Text = Path.GetFileName(folder);
                 }
 
                 // Check subfolders:

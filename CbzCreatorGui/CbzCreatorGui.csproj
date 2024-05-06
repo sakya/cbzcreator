@@ -28,9 +28,9 @@
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.10" />
         <PackageReference Include="AvaloniaSingleWindow" Version="1.1.9" />
-        <PackageReference Include="Octokit" Version="10.0.0" />
-        <PackageReference Include="Projektanker.Icons.Avalonia" Version="9.2.0" />
-        <PackageReference Include="Projektanker.Icons.Avalonia.FontAwesome" Version="9.2.0" />
+        <PackageReference Include="Octokit" Version="11.0.1" />
+        <PackageReference Include="Projektanker.Icons.Avalonia" Version="9.3.0" />
+        <PackageReference Include="Projektanker.Icons.Avalonia.FontAwesome" Version="9.3.0" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\CbzCreator.Lib\CbzCreator.Lib.csproj" />

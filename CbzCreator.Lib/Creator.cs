@@ -212,9 +212,20 @@ public static class Creator
                 continue;
             }
 
-            var entryName = isRoot ?
-                SanitizeFilename(Path.GetFileName(file)) :
-                Path.Join(SanitizeFilename(Path.GetDirectoryName(file)!.Remove(0, rootPath.Length + 1)), SanitizeFilename(Path.GetFileName(file)));
+            string entryName;
+            if (isRoot) {
+                entryName = SanitizeFilename(Path.GetFileName(file));
+            } else {
+                var path = Path.GetDirectoryName(file);
+                if (path.Length > rootPath.Length) {
+                    path = path.Remove(0, rootPath.Length + 1);
+                } else {
+                    path = path.Remove(0, rootPath.Length);
+                }
+
+                entryName = Path.Join(SanitizeFilename(path), SanitizeFilename(Path.GetFileName(file)));
+            }
+
             var entry = zip.CreateEntry(entryName, CompressionLevel.SmallestSize);
             using var writer = entry.Open();
             using var inputStream = new FileStream(file, FileMode.Open, FileAccess.Read);
