@@ -217,6 +217,9 @@ public static class Creator
                 entryName = SanitizeFilename(Path.GetFileName(file));
             } else {
                 var path = Path.GetDirectoryName(file);
+                if (path == null)
+                    return progressFiles;
+
                 if (path.Length > rootPath.Length) {
                     path = path.Remove(0, rootPath.Length + 1);
                 } else {
